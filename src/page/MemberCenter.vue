@@ -33,12 +33,26 @@ async function memberLogin() {
 //註冊API
 
 const RegisterForm = ref({
-  email: "",
-  password: "",
-  nickname: "",
+  email: "text@gmail.com",
+  passwd: "asdqwer6945",
+  nickname: "T2345678901234r",
 });
 async function memberRegister() {
-  
+  // 整理要發送的請求數據
+  const RegisterData = {
+    email: RegisterForm.value.email.trim(),
+    passwd: RegisterForm.value.passwd.trim(),
+    nickname: RegisterForm.value.nickname.trim(),
+  };
+  console.log("發送的登入數據:", RegisterData);
+  try {
+    const response = await apiClient.post("/register", RegisterData);
+
+    console.log("註冊註冊成功:", response);
+    return response;
+  } catch (error) {
+    console.error("註冊錯誤:", error);
+  }
 }
 </script>
 
@@ -165,7 +179,7 @@ async function memberRegister() {
                 </button>
               </div>
               <div class="p-6 pt-8">
-                <form class="space-y-6" @submit.prevent="memberSign">
+                <form class="space-y-6" @submit.prevent="memberRegister">
                   <!-- 註冊表單內容 -->
                   <!-- 電子郵件 -->
                   <div>
@@ -174,7 +188,8 @@ async function memberRegister() {
                       type="email"
                       id="register-email"
                       class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md text-sm shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                      placeholder="請輸入電子郵件" />
+                      placeholder="請輸入電子郵件"
+                      v-model="RegisterForm.email" />
                   </div>
 
                   <!-- 密碼 -->
@@ -184,7 +199,8 @@ async function memberRegister() {
                       type="password"
                       id="register-password"
                       class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md text-sm shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                      placeholder="請輸入密碼" />
+                      placeholder="請輸入密碼"
+                      v-model="RegisterForm.passwd" />
                   </div>
 
                   <!-- 確認密碼 -->
@@ -204,7 +220,8 @@ async function memberRegister() {
                       type="text"
                       id="register-nickname"
                       class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md text-sm shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                      placeholder="請輸入暱稱" />
+                      placeholder="請輸入暱稱"
+                      v-model="RegisterForm.nickname" />
                   </div>
 
                   <!-- 同意條款 -->
