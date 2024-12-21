@@ -80,25 +80,27 @@ const apiClient = axios.create({
 // 請求攔截器
 apiClient.interceptors.request.use(
   (config) => {
+
+    //  暫時先不使用
     // **修改點 1: 確保 URL 是正確的，避免硬編碼**
-    if (config.url === API_PATHS.AUTH.LOGIN) {
-      config.url = API_PATHS.AUTH.LOGIN; // 使用預定義的路徑
-    } else if (config.url === API_PATHS.AUTH.REGISTER) {
-      config.url = API_PATHS.AUTH.REGISTER; // 使用預定義的路徑
-    }
+    // if (config.url === API_PATHS.AUTH.LOGIN) {
+    //   config.url = API_PATHS.AUTH.LOGIN; // 使用預定義的路徑
+    // } else if (config.url === API_PATHS.AUTH.REGISTER) {
+    //   config.url = API_PATHS.AUTH.REGISTER; // 使用預定義的路徑
+    // }
 
-    // **修改點 2: 確保完整 URL 不被 baseURL 拼接**
-    if (config.url.startsWith("http")) {
-      console.log("完整 URL，直接使用:", config.url);
-    } else {
-      console.log("相對路徑，拼接 baseURL:", config.baseURL + config.url);
-    }
+    // // **修改點 2: 確保完整 URL 不被 baseURL 拼接**
+    // if (config.url.startsWith("http")) {
+    //   console.log("完整 URL，直接使用:", config.url);
+    // } else {
+    //   console.log("相對路徑，拼接 baseURL:", config.baseURL + config.url);
+    // }
 
-    console.log("發送請求:", {
-      url: config.baseURL + config.url, // 檢查最終的請求 URL
-      method: config.method,
-      headers: config.headers,
-    });
+    // console.log("發送請求:", {
+    //   url: config.baseURL + config.url, // 檢查最終的請求 URL
+    //   method: config.method,
+    //   headers: config.headers,
+    // });
 
     return config;
   },
