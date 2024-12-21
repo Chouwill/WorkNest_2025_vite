@@ -119,9 +119,11 @@ apiClient.interceptors.response.use(
   (error) => {
     // **修改點 3: 增加錯誤處理提示**
     if (error.response?.status === 401) {
-      console.error("認證失敗 - 請確認 API Key 是否正確");
+      // console.error("認證失敗 - 請確認 API Key 是否正確");
+      console.log("認證失敗 - 請確認 API Key 是否正確");
     }
-    console.error("回應錯誤:", error.response || error);
+    // console.error("回應錯誤:", error.response || error);
+    console.log("回應錯誤:", error.response || error);
     return Promise.reject(error);
   }
 );

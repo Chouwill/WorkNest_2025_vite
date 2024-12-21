@@ -1,7 +1,12 @@
 <script setup>
 import { ref } from "vue";
+import ErrorModal from "../components/member/ErrorModal.vue";
 import apiClient from "../api/axios";
 import { API_PATHS } from "../api/axios";
+// import ErrorModal from "../components/member/ErrorModal.vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 //  登入API
 const isLogin = ref(true);
@@ -24,6 +29,9 @@ async function memberLogin() {
     const response = await apiClient.post("/login", loginData);
 
     console.log("登入成功:", response);
+    setTimeout(() => {
+      router.push("/Backendsystem"); // 跳轉到 /about 頁面
+    }, 3000); // 3 秒後跳轉
     return response;
   } catch (error) {
     console.error("登入錯誤:", error);
@@ -47,11 +55,16 @@ async function memberRegister() {
   console.log("發送的登入數據:", RegisterData);
   try {
     const response = await apiClient.post("/register", RegisterData);
-
     console.log("註冊註冊成功:", response);
+    isLogin.value = !isLogin.value;
+
     return response;
   } catch (error) {
-    console.error("註冊錯誤:", error);
+    // console.error("註冊錯誤:", error);
+    console.log("註冊錯誤:", error);
+    // 提取錯誤訊息並顯示彈窗
+    // errorMessage.value = error.response?.data?.message || "發生未知錯誤，請稍後再試";
+    // isErrorVisible.value = true;
   }
 }
 </script>
@@ -204,14 +217,14 @@ async function memberRegister() {
                   </div>
 
                   <!-- 確認密碼 -->
-                  <div>
+                  <!-- <div>
                     <label for="confirm-password" class="block text-sm font-medium text-gray-700">確認密碼</label>
                     <input
                       type="password"
                       id="confirm-password"
                       class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md text-sm shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                       placeholder="請再次輸入密碼" />
-                  </div>
+                  </div> -->
 
                   <!-- 暱稱 -->
                   <div>
@@ -225,7 +238,7 @@ async function memberRegister() {
                   </div>
 
                   <!-- 同意條款 -->
-                  <div class="flex items-center">
+                  <!-- <div class="flex items-center">
                     <input
                       type="checkbox"
                       id="terms"
@@ -236,7 +249,7 @@ async function memberRegister() {
                       和
                       <a href="#" class="font-medium text-blue-600 hover:text-blue-500">隱私政策</a>
                     </label>
-                  </div>
+                  </div> -->
 
                   <!-- 註冊按鈕 -->
                   <div>
@@ -258,15 +271,19 @@ async function memberRegister() {
   <div>email: {{ LoginForm.email }}</div>
   <div>: {{ LoginForm.serialtext }}</div>
   <div>: {{ LoginForm.nickname }}</div>
+  <!-- <ErrorModal :msg="errorMessage" /> -->
 </template>
 
 <style scoped>
+.container {
+}
 .flip-card-container {
   perspective: 1000px;
   width: 100%;
   min-height: 600px;
   position: relative;
   margin-bottom: 2rem;
+  /* background-color: #813030; */
 }
 
 .flip-card {

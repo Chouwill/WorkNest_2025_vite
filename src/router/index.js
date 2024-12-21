@@ -11,6 +11,11 @@ const routes = [
     name: "MemberCenter",
     component: () => import("../page/MemberCenter.vue"),
   },
+  {
+    path: "/Backendsystem",
+    name: "Backendsystem",
+    component: () => import("../page/Backendsystem.vue"),
+  },
 
   
 ];
