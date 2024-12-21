@@ -58,8 +58,6 @@ const filteredStores = computed(() => {
 });
 </script>
 
-
-
 <template>
   <main class="min-h-screen bg-slate-50 min-w-[375px]">
     <!-- 背景區域 -->
@@ -103,21 +101,64 @@ const filteredStores = computed(() => {
       </div>
 
       <!-- 顯示篩選結果 -->
-      <div class="stores-list grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div
-          v-for="store in filteredStores"
-          :key="store.id"
-          class="store-item bg-white shadow-md rounded-lg overflow-hidden">
-          <img :src="store.spacePhoto" :alt="store.StoreName" class="store-image w-full h-48 object-cover" />
-          <div class="store-content p-4">
-            <h3 class="text-lg font-semibold text-gray-800">{{ store.StoreName }}</h3>
-            <p class="address text-sm text-gray-600">{{ store.address }}</p>
-            <p class="business-hours text-sm text-gray-600">{{ store.businessHours }}</p>
-            <p class="outlet text-sm text-gray-800">插座：{{ store.powerOutlet ? "有" : "無" }}</p>
-            <p class="min-spend text-sm text-gray-800">最低消費：{{ store.minSpend }} 元</p>
+      <div class="stores-list grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+    <div
+      v-for="store in filteredStores"
+      :key="store.id"
+      class="bg-white rounded-lg shadow-md overflow-hidden max-w-2xl mx-auto w-full">
+      <div class="md:flex">
+        <div class="md:w-2/5">
+          <img
+            :src="store.spacePhoto"
+            :alt="store.StoreName"
+            class="h-48 w-full object-cover md:h-full" />
+        </div>
+        <div class="p-4 md:p-5 md:w-3/5">
+          <h3 class="text-lg font-semibold text-gray-800 mb-2 truncate">{{ store.StoreName }}</h3>
+          <div class="space-y-2">
+            <div class="flex items-start">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4 text-gray-500 mt-0.5 mr-2 flex-shrink-0"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              </svg>
+              <p class="text-gray-600 text-sm truncate">{{ store.address }}</p>
+            </div>
+            <div class="flex items-start">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4 text-gray-500 mt-0.5 mr-2 flex-shrink-0"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <p class="text-gray-600 text-sm truncate">{{ store.businessHours }}</p>
+            </div>
+          </div>
+          <div class="mt-3 flex flex-wrap gap-1.5">
+            <span class="px-2 py-0.5 bg-blue-100 text-blue-800 text-xs rounded-full">
+              插座: {{ store.powerOutlet ? "有" : "無" }}
+            </span>
+            <span class="px-2 py-0.5 bg-purple-100 text-purple-800 text-xs rounded-full">
+              最低消費: {{ store.minSpend }}元
+            </span>
           </div>
         </div>
       </div>
+    </div>
+  </div>
     </div>
   </main>
 </template>

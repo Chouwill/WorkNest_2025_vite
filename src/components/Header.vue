@@ -1,69 +1,39 @@
 <template>
-  <header class="bg-gradient-to-r from-amber-900 to-amber-800 shadow-lg">
+  <header class="bg-gradient-to-r from-amber-900 to-amber-800 shadow-lg sticky top-0 z-50">
     <div class="container mx-auto px-4">
-      <div class="flex items-center justify-between h-28"> <!-- 調整 header 高度 -->
+      <div class="flex items-center justify-between h-24">
         <!-- Logo Section -->
+        <div class="flex items-center group">
+          <router-link to="/">
+            <div class="flex items-center space-x-5 transition-transform duration-300 hover:scale-105">
+              <div class="relative">
+                <div
+                  class="absolute inset-0 bg-amber-50/20 rounded-full blur-lg group-hover:bg-amber-50/30 transition-all duration-300"></div>
+                <img
+                  src="https://picsum.photos/90/90"
+                  alt="Logo"
+                  class="w-16 h-16 rounded-full shadow-xl border-2 border-amber-50/40 relative z-10 transition-all duration-300 group-hover:border-amber-50/60" />
+              </div>
+              <span
+                class="text-3xl font-bold text-amber-50 hidden sm:block tracking-wider transition-colors duration-300 group-hover:text-amber-100">
+                咖啡地圖
+              </span>
+            </div>
+          </router-link>
+        </div>
+
+        <!-- Navigation (Visible on all screen sizes) -->
         <div class="flex items-center">
-          <a href="/" class="flex items-center space-x-5"> <!-- 適度的間距 -->
-            <div class="relative">
-              <div class="absolute inset-0 bg-amber-50/10 rounded-full blur-md"></div>
-              <img 
-                src="https://picsum.photos/90/90" 
-                alt="Logo" 
-                class="w-20 h-20 rounded-full shadow-lg border-2 border-amber-50/30 relative z-10" 
-              />
-            </div>
-            <span class="text-3xl font-bold text-amber-50 hidden sm:block tracking-wide">
-              咖啡地圖
-            </span>
-          </a>
-        </div>
-
-        <!-- Desktop Navigation -->
-        <div class="hidden md:flex items-center space-x-5">
-          <button
-            type="button"
-            class="px-6 py-2.5 text-amber-50 border-2 border-amber-50/30 rounded-lg hover:bg-amber-50/10 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-amber-50/20 text-lg">
-            登入
-          </button>
-          <button
-            type="button"
-            class="px-6 py-2.5 bg-amber-500 text-amber-950 rounded-lg hover:bg-amber-400 transition-colors duration-200 shadow-lg focus:outline-none focus:ring-2 focus:ring-amber-400 text-lg font-medium">
-            註冊
-          </button>
-        </div>
-
-        <!-- Mobile Menu Button -->
-        <div class="md:hidden">
-          <button 
-            class="mobile-menu-button p-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-50/20"
-          >
-            <div class="w-9 h-9 relative">
-              <span 
-                class="absolute h-0.5 w-full bg-amber-50 transform transition duration-300 ease-in-out"
-              ></span>
-              <span 
-                class="absolute h-0.5 w-full bg-amber-50 transform transition duration-300 ease-in-out translate-y-3.5"
-              ></span>
-              <span 
-                class="absolute h-0.5 w-full bg-amber-50 transform transition duration-300 ease-in-out translate-y-7"
-              ></span>
-            </div>
-          </button>
-        </div>
-      </div>
-
-      <!-- Mobile Menu -->
-      <div class="hidden md:hidden">
-        <div class="px-3 pt-2 pb-3 space-y-3 bg-amber-800/50 rounded-lg mb-4">
-          <button
-            class="w-full px-6 py-3 text-amber-50 border-2 border-amber-50/30 rounded-lg hover:bg-amber-50/10 transition-colors duration-200 text-lg">
-            登入
-          </button>
-          <button
-            class="w-full px-6 py-3 bg-amber-500 text-amber-950 rounded-lg hover:bg-amber-400 transition-colors duration-200 shadow-lg text-lg font-medium">
-            註冊
-          </button>
+          <router-link to="/membercenter">
+            <button
+              type="button"
+              class="px-4 sm:px-6 py-2 text-amber-50 border-2 border-amber-50/30 rounded-lg hover:bg-amber-50/10 hover:border-amber-50/50 active:scale-95 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-amber-50/20 text-base sm:text-lg flex items-center space-x-2">
+              <span>會員中心</span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+              </svg>
+            </button>
+          </router-link>
         </div>
       </div>
     </div>
@@ -71,8 +41,21 @@
 </template>
 
 <style scoped>
-.mobile-menu-button:focus {
-  outline: 2px solid rgba(255, 237, 213, 0.2);
-  outline-offset: 2px;
+header {
+  transition: box-shadow 0.3s;
+}
+
+header.scrolled {
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+
+button {
+  transition: transform 0.2s;
+}
+
+button:active {
+  transform: scale(0.95);
 }
 </style>
+
+

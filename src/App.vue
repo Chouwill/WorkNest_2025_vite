@@ -1,16 +1,13 @@
 <template>
   <Header />
-  <Main />
-  <Login />
-  <Register />
+  <router-view></router-view>
   <Footer />
 </template>
 
 <script setup>
 import Header from "./components/Header.vue";
-import Main from "./components/Main.vue";
-import Footer from "./components/member/Footer.vue";
-import Login from "./components/member/login.vue";
-import Register from "./components/member/Register.vue";
+
+import Footer from "./components/Footer.vue";
+
 // import Footer from "./components/member/Footer.vue";
 </script>
