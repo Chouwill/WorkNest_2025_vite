@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 
 export default defineConfig({
-  base: "/WorkNest_2025_vite/",
+  base: "/WorkNest_2025_CDN/",
   plugins: [vue()],
   server: {
     proxy: {
