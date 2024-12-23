@@ -19,7 +19,9 @@ async function getInformation() {
     // 清洗資料
     information.value = Object.values(response).map((item) => ({
       ...item,
+      StoreName: item.StoreName || "未命名咖啡廳",
       powerOutlet: item.powerOutlet === true || item.powerOutlet === "是", // 轉換為布林值
+      id: item.id || null, // 確保 id 存在
     }));
 
     console.log("清洗後的資料:", information.value);
@@ -55,41 +57,98 @@ const currentForm = ref({
   placeType: "",
 });
 
+// 重置表單
+const resetForm = () => {
+  currentForm.value = {
+    id: null,
+    StoreName: "",
+    city: "",
+    district: "",
+    address: "",
+    order: "",
+    spacePhoto: "",
+    hasOutlet: false,
+    minSpend: 0,
+    placeType: "",
+  };
+};
+
 // 點擊「新增咖啡廳」
 const handleAdd = () => {
   isEditMode.value = false;
   isModalOpen.value = true;
-  // 設置預設值
-  currentForm.value = {
-    id: null,
-    StoreName: "新咖啡廳",
-    city: "台北市",
-    district: "中正區",
-    address: "",
-    order: "01",
-    spacePhoto: "https://via.placeholder.com/600x400",
-    hasOutlet: true,
-    minSpend: 100,
-    placeType: "coffee_shop",
-  };
+  resetForm();
+  currentForm.value.StoreName = "新咖啡廳";
 };
 
 // 點擊「修改」
 const handleEdit = (cafe) => {
+  if (!cafe || !cafe.id) {
+    console.error("編輯模式下，缺少有效的咖啡廳資料");
+    return;
+  }
+
   isEditMode.value = true;
   isModalOpen.value = true;
   currentForm.value = { ...cafe };
 };
 
 // 提交表單
+// const handleSubmit = async () => {
+//   try {
+//     if (!currentForm.value) {
+//       console.error("表單資料未定義");
+//       return;
+//     }
+
+//     if (isEditMode.value) {
+//       if (!currentForm.value.id) {
+//         console.error("編輯模式下，表單缺少 id");
+//         return;
+//       }
+
+//       await apiClient.put(`/${currentForm.value.id}`, currentForm.value);
+//       console.log("更新成功");
+
+//       const index = information.value.findIndex((item) => item.id === currentForm.value.id);
+//       if (index !== -1) {
+//         information.value[index] = { ...currentForm.value };
+//       }
+//     } else {
+//       const response = await apiClient.post("/", currentForm.value);
+
+//       if (!response.data || !response.data.id) {
+//         console.error("新增失敗，後端回應中缺少 id");
+//         return;
+//       }
+
+//       console.log("新增成功");
+
+//       information.value.push({ ...currentForm.value, id: response.data.id });
+//     }
+
+//     isModalOpen.value = false;
+//     resetForm();
+//   } catch (error) {
+//     console.error("提交失敗", error);
+//   }
+// };
 const handleSubmit = async () => {
   try {
+    if (!currentForm.value) {
+      console.error("表單資料未定義");
+      return;
+    }
+
     if (isEditMode.value) {
-      // 更新資料
+      if (!currentForm.value.id) {
+        console.error("編輯模式下，表單缺少 id");
+        return;
+      }
+
       await apiClient.put(`/${currentForm.value.id}`, currentForm.value);
       console.log("更新成功");
 
-      // 更新前端資料
       const index = information.value.findIndex((item) => item.id === currentForm.value.id);
       if (index !== -1) {
         information.value[index] = { ...currentForm.value };
@@ -97,25 +156,33 @@ const handleSubmit = async () => {
     } else {
       // 新增資料
       const response = await apiClient.post("/", currentForm.value);
+
+      // 根據後端回應結構，直接從 response.id 提取
+      const newId = response.id; // 從 response.id 提取
+      if (!newId) {
+        console.error("新增失敗，後端回應中缺少 id");
+        return;
+      }
+
       console.log("新增成功");
 
       // 新增到前端資料
-      information.value.push({ ...currentForm.value, id: response.data.id });
+      information.value.push({ ...currentForm.value, id: newId });
     }
 
     isModalOpen.value = false; // 關閉模態框
+    resetForm(); // 重置表單
   } catch (error) {
     console.error("提交失敗", error);
   }
 };
 
-// 刪除資料
+// 刪除資料API
 const handleDelete = async (id) => {
   try {
     await apiClient.delete(`/${id}`);
     console.log("刪除成功");
 
-    // 從前端資料中移除
     information.value = information.value.filter((item) => item.id !== id);
   } catch (error) {
     console.error("刪除失敗", error);
@@ -136,11 +203,11 @@ const handleDelete = async (id) => {
     </div>
 
     <!-- 咖啡廳資料表格 -->
-    <div class="cafe-table">
-      <table class="w-full border-collapse border border-gray-300">
+    <div class="cafe-table overflow-x-auto">
+      <table class="w-full border-collapse border border-gray-300 min-w-[800px]">
         <thead>
           <tr class="bg-gray-100">
-            <th class="border border-gray-300 p-2">ID</th> <!-- 新增 -->
+            <th class="border border-gray-300 p-2">ID</th>
             <th class="border border-gray-300 p-2">名稱</th>
             <th class="border border-gray-300 p-2">城市</th>
             <th class="border border-gray-300 p-2">地區</th>
@@ -151,25 +218,25 @@ const handleDelete = async (id) => {
         </thead>
         <tbody>
           <tr v-for="cafe in information" :key="cafe.id" class="hover:bg-gray-50 transition">
-            <td class="border border-gray-300 p-2">{{ cafe.id }}</td> <!-- 新增 -->
+            <td class="border border-gray-300 p-2">{{ cafe.id }}</td>
             <td class="border border-gray-300 p-2">{{ cafe.StoreName }}</td>
             <td class="border border-gray-300 p-2">{{ cafe.city }}</td>
             <td class="border border-gray-300 p-2">{{ cafe.district }}</td>
             <td class="border border-gray-300 p-2">{{ cafe.address }}</td>
             <td class="border border-gray-300 p-2">{{ cafe.order }}</td>
             <td class="border border-gray-300 p-2 text-center">
-              <!-- 修改按鈕 -->
-              <button
-                @click="handleEdit(cafe)"
-                class="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition">
-                修改
-              </button>
-              <!-- 刪除按鈕 -->
-              <button
-                @click="handleDelete(cafe.id)"
-                class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">
-                刪除
-              </button>
+              <div class="flex justify-center gap-4">
+                <button
+                  @click="handleEdit(cafe)"
+                  class="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition">
+                  修改
+                </button>
+                <button
+                  @click="handleDelete(cafe.id)"
+                  class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">
+                  刪除
+                </button>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -178,7 +245,7 @@ const handleDelete = async (id) => {
 
     <!-- 彈窗 (Modal) -->
     <div v-if="isModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-2xl">
+      <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-2xl md:max-w-lg lg:max-w-xl mx-4">
         <h2 class="text-2xl font-bold mb-4">{{ isEditMode ? "修改咖啡廳" : "新增咖啡廳" }}</h2>
         <form @submit.prevent="handleSubmit" class="space-y-4">
           <div>
