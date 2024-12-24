@@ -55,6 +55,8 @@ const currentForm = ref({
   hasOutlet: false,
   minSpend: 0,
   placeType: "",
+  nearbyMRTStation: "台北車站捷運站",
+  floor: "3層樓",
 });
 
 // 重置表單
@@ -70,6 +72,8 @@ const resetForm = () => {
     hasOutlet: false,
     minSpend: 0,
     placeType: "",
+    nearbyMRTStation: "",
+    floor: "",
   };
 };
 
@@ -321,12 +325,27 @@ const handleDelete = async (id) => {
             </div>
           </div>
           <div>
+            <label class="block text-gray-700 font-semibold mb-2">附近捷運站</label>
+            <input
+              type="text"
+              class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              v-model="currentForm.nearbyMRTStation" />
+          </div>
+          <div>
+            <label class="block text-gray-700 font-semibold mb-2">樓層</label>
+            <input
+              type="text"
+              class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              v-model="currentForm.floor" />
+          </div>
+          <div>
             <label class="block text-gray-700 font-semibold mb-2">空間圖片</label>
             <input
               type="url"
               class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               v-model="currentForm.spacePhoto" />
           </div>
+
           <div class="flex justify-end space-x-4 mt-6">
             <button
               type="button"

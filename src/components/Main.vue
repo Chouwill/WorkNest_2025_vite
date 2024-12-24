@@ -143,6 +143,32 @@ const filteredStores = computed(() => {
                   </svg>
                   <p class="text-gray-600 text-sm truncate">{{ store.businessHours }}</p>
                 </div>
+                <div class="flex items-start">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4 text-gray-500 mt-0.5 mr-2 flex-shrink-0"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h11M9 21V3" />
+                  </svg>
+                  <p class="text-gray-600 text-sm truncate">樓層: {{ store.floor }}</p>
+                </div>
+                <div class="flex items-start">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4 text-gray-500 mt-0.5 mr-2 flex-shrink-0"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M3 3h18M3 8h18M3 13h18M3 18h18" />
+                  </svg>
+                  <p class="text-gray-600 text-sm truncate">鄰近捷運站: {{ store.nearbyMRTStation }}</p>
+                </div>
               </div>
               <div class="mt-3 flex flex-wrap gap-1.5">
                 <span class="px-2 py-0.5 bg-blue-100 text-blue-800 text-xs rounded-full">
