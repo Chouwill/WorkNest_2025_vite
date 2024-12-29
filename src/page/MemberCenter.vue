@@ -3,7 +3,6 @@ import { ref } from "vue";
 import ErrorModal from "../components/member/ErrorModal.vue";
 import apiClient from "../api/axios";
 import { API_PATHS } from "../api/axios";
-// import ErrorModal from "../components/member/ErrorModal.vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
@@ -15,6 +14,12 @@ const LoginForm = ref({
   uid: "wqqQhMlueLTxZps1r5EqCHotBP22",
   password: "",
   nickname: "12345678912345E",
+});
+const isModalVisible = ref(false);
+
+const ErrorMessage = ref({
+  LoginStatus: "",
+  RegisterStatus: "",
 });
 
 async function memberLogin() {
@@ -35,6 +40,9 @@ async function memberLogin() {
     return response;
   } catch (error) {
     console.error("登入錯誤:", error);
+    ErrorMessage.value.LoginStatus = error.response?.data?.message || "登入失敗";
+    console.log(ErrorMessage.value.LoginStatus);
+    isModalVisible.value = true; // 顯示彈窗
   }
 }
 
@@ -63,14 +71,26 @@ async function memberRegister() {
     // console.error("註冊錯誤:", error);
     console.log("註冊錯誤:", error);
     // 提取錯誤訊息並顯示彈窗
-    // errorMessage.value = error.response?.data?.message || "發生未知錯誤，請稍後再試";
-    // isErrorVisible.value = true;
+    ErrorMessage.value.RegisterStatus = error.response?.data?.message || "註冊失敗";
+    console.log(ErrorMessage.value.RegisterStatus);
+    isModalVisible.value = true; // 顯示彈窗
   }
 }
 </script>
 
 <template>
   <div class="min-h-screen flex items-center justify-center bg-gray-50">
+    <!-- 錯誤訊息顯示 -->
+    <ErrorModal
+      v-if="isModalVisible && ErrorMessage.LoginStatus"
+      :message="ErrorMessage.LoginStatus"
+      :isVisible="isModalVisible"
+      @close="isModalVisible = false" />
+    <!-- 加入這些除錯信息 -->
+    <!-- <div>
+      <p>Modal Visible: {{ isModalVisible }}</p>
+      <p>Error Message: {{ ErrorMessage.LoginStatus }}</p>
+    </div> -->
     <div class="w-full max-w-md">
       <!-- 卡片容器 -->
       <div class="flip-card-container">
@@ -132,16 +152,6 @@ async function memberRegister() {
                       placeholder="暱稱"
                       v-model="LoginForm.nickname" />
                   </div>
-
-                  <!-- 密碼 -->
-                  <!-- <div>
-                    <label for="password" class="block text-sm font-medium text-gray-700">密碼</label>
-                    <input
-                      type="password"
-                      id="password"
-                      class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md text-sm shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                      placeholder="請輸入密碼" />
-                  </div> -->
 
                   <!-- 記住我和忘記密碼 -->
                   <div class="flex items-center justify-between">
@@ -216,16 +226,6 @@ async function memberRegister() {
                       v-model="RegisterForm.passwd" />
                   </div>
 
-                  <!-- 確認密碼 -->
-                  <!-- <div>
-                    <label for="confirm-password" class="block text-sm font-medium text-gray-700">確認密碼</label>
-                    <input
-                      type="password"
-                      id="confirm-password"
-                      class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md text-sm shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                      placeholder="請再次輸入密碼" />
-                  </div> -->
-
                   <!-- 暱稱 -->
                   <div>
                     <label for="register-nickname" class="block text-sm font-medium text-gray-700">暱稱</label>
@@ -236,20 +236,6 @@ async function memberRegister() {
                       placeholder="請輸入暱稱"
                       v-model="RegisterForm.nickname" />
                   </div>
-
-                  <!-- 同意條款 -->
-                  <!-- <div class="flex items-center">
-                    <input
-                      type="checkbox"
-                      id="terms"
-                      class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
-                    <label for="terms" class="ml-2 block text-sm text-gray-900">
-                      我同意
-                      <a href="#" class="font-medium text-blue-600 hover:text-blue-500">服務條款</a>
-                      和
-                      <a href="#" class="font-medium text-blue-600 hover:text-blue-500">隱私政策</a>
-                    </label>
-                  </div> -->
 
                   <!-- 註冊按鈕 -->
                   <div>
@@ -271,7 +257,6 @@ async function memberRegister() {
   <div>email: {{ LoginForm.email }}</div>
   <div>: {{ LoginForm.serialtext }}</div>
   <div>: {{ LoginForm.nickname }}</div>
-  <!-- <ErrorModal :msg="errorMessage" /> -->
 </template>
 
 <style scoped>

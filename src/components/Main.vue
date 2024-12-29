@@ -6,6 +6,22 @@ const information = ref([]);
 const loading = ref(false);
 const error = ref(null);
 
+
+
+const store = {
+  spacePhoto: '', // 後端圖片 URL
+  StoreName: '商店名稱'
+};
+
+const defaultImage = 'https://cdntwrunning.biji.co/800_eb53c296eb6fc1ac757c290a1f6444b8.jpg'; // 預設圖片，後端未傳入顯示
+
+// 設置背景圖片樣式
+const backgroundStyle = {
+  backgroundImage: `url(${store.spacePhoto || defaultImage})`,
+  backgroundSize: 'cover',
+  backgroundPosition: 'center'
+};
+
 async function getInformation() {
   try {
     loading.value = true;
@@ -107,7 +123,7 @@ const filteredStores = computed(() => {
           :key="store.id"
           class="bg-white rounded-lg shadow-md overflow-hidden max-w-2xl mx-auto w-full">
           <div class="md:flex">
-            <div class="md:w-2/5">
+            <div class="md:w-2/5" :style="backgroundStyle">
               <img :src="store.spacePhoto" :alt="store.StoreName" class="h-48 w-full object-cover md:h-full" />
             </div>
             <div class="p-4 md:p-5 md:w-3/5">
