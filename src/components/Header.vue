@@ -23,29 +23,32 @@
         </div>
 
         <!-- Navigation -->
-        <div class="flex items-center relative">
+        <div class="flex items-center flex-wrap justify-center relative">
           <!-- 主按鈕 -->
-          <button
-    type="button"
-    class="main-button px-4 sm:px-6 py-2 text-amber-50 border-2 border-amber-50/30 rounded-lg hover:bg-amber-50/10 hover:border-amber-50/50 active:scale-95 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-amber-50/20 text-base sm:text-lg flex items-center space-x-2">
-            <span>會員中心</span>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-            </svg>
-          </button>
-
+          <router-link to="/membercenter">
+            <button
+              type="button"
+              class="main-button px-4 sm:px-6 py-2 text-amber-50 border-2 border-amber-50/30 rounded-lg hover:bg-amber-50/10 hover:border-amber-50/50 active:scale-95 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-amber-50/20 text-base sm:text-lg flex items-center space-x-2"
+              @click="toggleLogin">
+              <span>會員中心</span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+              </svg>
+            </button>
+          </router-link>
           <!-- 滑出按鈕 -->
-          <button
-            class="main-button slide-button absolute top-full left-1/2 transform -translate-x-1/2 translate-y-2 opacity-0 z-10 pointer-events-none">
-            登出
-          </button>
+          <div class="w-full mt-2">
+            <!-- w-full 讓按鈕占滿整個行，mt-2 為上邊距 -->
+            <button class="login_out w-full" v-if="LoginOut">登出</button>
+            <!-- w-full 讓按鈕占滿行 -->
+          </div>
         </div>
       </div>
     </div>
   </header>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 header {
   transition: box-shadow 0.3s;
 }
@@ -64,34 +67,29 @@ button:active {
 
 /* 主按鈕樣式 */
 
-.main-button:hover {
-  background-color: #8D3E0F; /* hover效果 */
+.main-button {
+  background-color: #8d3e0f; /* hover效果 */
+  position: relative;
 }
-
-/* 滑出按鈕初始狀態 */
-.slide-button {
-  position: absolute;
-  top: 51px;
-  left: 50%;
-  transform: translate(-50%, -10px) scale(0.9);
-  opacity: 0;
-  background-color: #3f1e0a; /* amber-500 */
-  color: white;
-  border: none;
-  padding: 10px 20px; /* 與主按鈕一致 */
-  border-radius: 5px;
-  transition: all 0.3s ease;
-  pointer-events: none; /* 初始狀態下不可點擊 */
-}
-
-.slide-button:hover {
-  background-color: rgba(255, 193, 7, 0.9); /* hover效果 */
-}
-
-/* 當主按鈕獲得焦點時，滑出按鈕顯示 */
-.main-button:focus + .slide-button {
-  transform: translate(-50%, 0) scale(1);
-  opacity: 1;
-  pointer-events: auto; /* 顯示狀態下可點擊 */
+.login_out {
+  width: 100%;
+  background-color: #fff;
+  padding: 8px 24px;
+  max-width: 152px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  // display: none;
 }
 </style>
+
+<script setup>
+import { ref } from "vue";
+
+const LoginOut = ref(false);
+
+const toggleLogin = () => {
+  LoginOut.value = !LoginOut.value;
+};
+</script>
