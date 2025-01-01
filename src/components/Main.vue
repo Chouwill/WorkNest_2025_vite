@@ -13,7 +13,7 @@ const store = {
   StoreName: '商店名稱'
 };
 
-const defaultImage = 'https://cdntwrunning.biji.co/800_eb53c296eb6fc1ac757c290a1f6444b8.jpg'; // 預設圖片，後端未傳入顯示
+const defaultImage = 'https://firebasestorage.googleapis.com/v0/b/projecttestapi-d84a9.firebasestorage.app/o/shopping_defaultImage.png?alt=media&token=2f522a2c-95e7-43f5-861e-ba6faab8da6c'; // 預設圖片，後端未傳入顯示
 
 // 設置背景圖片樣式
 const backgroundStyle = {
