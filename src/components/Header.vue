@@ -10,7 +10,7 @@
                 <div
                   class="absolute inset-0 bg-amber-50/20 rounded-full blur-lg group-hover:bg-amber-50/30 transition-all duration-300"></div>
                 <img
-                  src="https://picsum.photos/90/90"
+                  src="/src/image/simple_book _logo_4394317 .png"
                   alt="Logo"
                   class="w-16 h-16 rounded-full shadow-xl border-2 border-amber-50/40 relative z-10 transition-all duration-300 group-hover:border-amber-50/60" />
               </div>

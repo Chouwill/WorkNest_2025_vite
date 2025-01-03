@@ -8,7 +8,7 @@
               <div class="relative">
                 <div class="absolute inset-0 bg-amber-50/10 rounded-full blur-md"></div>
                 <img 
-                  src="https://picsum.photos/90/90" 
+                  src="/src/image/simple_book _logo_4394317 .png" 
                   alt="Logo" 
                   class="w-16 h-16 rounded-full shadow-lg border-2 border-amber-50/30 relative z-10"
                 />

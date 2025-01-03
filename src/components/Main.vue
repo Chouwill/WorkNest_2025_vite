@@ -189,7 +189,7 @@ const toggleStoreModal = () => {
                     stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h11M9 21V3" />
                   </svg>
-                  <p class="text-gray-600 text-sm truncate">樓層: {{ store.floor }}</p>
+                  <p class="text-gray-600 text-sm truncate">樓層數: {{ store.floor }}</p>
                 </div>
                 <div class="flex items-start">
                   <svg

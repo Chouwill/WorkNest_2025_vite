@@ -299,7 +299,7 @@ const handleDelete = async (id) => {
               v-model="currentForm.nearbyMRTStation" />
           </div>
           <div>
-            <label class="block text-gray-700 font-semibold mb-2">樓層</label>
+            <label class="block text-gray-700 font-semibold mb-2">樓層數</label>
             <input
               type="text"
               class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
