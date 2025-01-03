@@ -82,8 +82,8 @@ const StoreModal = ref(false);
 
 const toggleStoreModal = () => {
   StoreModal.value = !StoreModal.value;
-  console.log("商家彈窗狀態",StoreModal.value);
-  
+  console.log("商家彈窗狀態", StoreModal.value);
+
   // if (StoreModal.value === true) {
   //   StoreModal.value = false;
   // }
@@ -215,105 +215,27 @@ const toggleStoreModal = () => {
                   最低消費: {{ store.minSpend }}元
                 </span>
               </div>
-
-              <!-- 新增按鈕區域 -->
-              <!-- <div class="mt-4 flex gap-2"> -->
-                <!-- 了解更多按鈕 -->
-                <!-- <button
-                  class="px-4 py-2 text-sm font-medium text-white bg-[#8B3D0E] hover:bg-[#6E300B] rounded-md focus:outline-none focus:ring-2 focus:ring-[#8B3D0E] focus:ring-offset-2"
-                  @click="toggleStoreModal">
-                  了解更多
-                </button> -->
-
-                <!-- 加入比較按鈕 -->
-                <!-- <button
+              <!-- 連結按鈕區域 -->
+              <div class="mt-4 flex gap-3">
+                <a
+                  :href="store.informationURL"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="px-4 py-2 text-sm font-medium text-white bg-[#8B3D0E] hover:bg-[#6E300B] rounded-md focus:outline-none focus:ring-2 focus:ring-[#8B3D0E] focus:ring-offset-2">
+                  更多資訊
+                </a>
+                <a
+                  :href="store.MapURL"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   class="px-4 py-2 text-sm font-medium text-[#8B3D0E] bg-[#F9EFE8] hover:bg-[#EAD8C8] rounded-md focus:outline-none focus:ring-2 focus:ring-[#8B3D0E] focus:ring-offset-2">
-                  加入比較
-                </button> -->
-              <!-- </div> -->
+                  導航到店
+                </a>
+              </div>
             </div>
           </div>
         </div>
       </div>
-
-      <!-- 商家詳細彈窗 -->
-      <!-- <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" v-if="StoreModal"> -->
-        <!-- 彈窗容器 -->
-        <!-- <div class="bg-white rounded-lg shadow-lg w-full max-w-3xl p-6 relative"> -->
-          <!-- 關閉按鈕 -->
-          <!-- <button
-            class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 focus:outline-none"
-            aria-label="關閉彈窗"
-            @click="toggleStoreModal">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button> -->
-
-          <!-- 彈窗內容 -->
-          <!-- <div> -->
-            <!-- 標題 -->
-            <!-- <h2 class="text-2xl font-bold text-[#8B3D0E] mb-6">店家資訊</h2> -->
-
-            <!-- 圖片區域 -->
-            <!-- <div class="mb-8">
-              <h3 class="text-xl font-semibold text-gray-800 mb-4">店家圖片</h3>
-              <div class="overflow-hidden rounded-lg shadow-md">
-                <img src="https://via.placeholder.com/600x300" alt="店家圖片" class="w-full h-auto object-cover" />
-              </div>
-            </div> -->
-
-            <!-- 菜單部分 -->
-            <!-- <div class="mb-8">
-              <h3 class="text-xl font-semibold text-gray-800 mb-4">菜單</h3>
-              <div class="overflow-x-auto">
-                <table class="table-auto w-full border-collapse border border-gray-300">
-                  <thead class="bg-[#8B3D0E] text-white">
-                    <tr>
-                      <th class="px-4 py-2 border border-gray-300 text-left">品項</th>
-                      <th class="px-4 py-2 border border-gray-300 text-left">價格</th>
-                      <th class="px-4 py-2 border border-gray-300 text-left">描述</th>
-                    </tr>
-                  </thead>
-                  <tbody class="text-gray-700">
-                    <tr>
-                      <td class="px-4 py-2 border border-gray-300">拿鐵咖啡</td>
-                      <td class="px-4 py-2 border border-gray-300">120元</td>
-                      <td class="px-4 py-2 border border-gray-300">濃郁的咖啡搭配綿密奶泡</td>
-                    </tr>
-                    <tr class="bg-gray-100">
-                      <td class="px-4 py-2 border border-gray-300">美式咖啡</td>
-                      <td class="px-4 py-2 border border-gray-300">100元</td>
-                      <td class="px-4 py-2 border border-gray-300">經典純黑咖啡</td>
-                    </tr>
-                    <tr>
-                      <td class="px-4 py-2 border border-gray-300">抹茶拿鐵</td>
-                      <td class="px-4 py-2 border border-gray-300">130元</td>
-                      <td class="px-4 py-2 border border-gray-300">日式抹茶與牛奶的完美結合</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div> -->
-
-            <!-- 官網連結部分 -->
-            <!-- <div>
-              <h3 class="text-xl font-semibold text-gray-800 mb-4">官網連結</h3>
-              <a
-                href="https://example.com"
-                target="_blank"
-                class="inline-block px-4 py-2 bg-[#8B3D0E] text-white text-sm font-medium rounded-md hover:bg-[#6E300B] focus:outline-none focus:ring-2 focus:ring-[#8B3D0E] focus:ring-offset-2">
-                前往官網
-              </a>
-            </div> -->
-          <!-- </div> -->
-        <!-- </div> -->
-      <!-- </div> -->
     </div>
   </main>
 </template>

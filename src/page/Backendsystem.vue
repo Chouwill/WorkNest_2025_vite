@@ -58,6 +58,8 @@ const currentForm = ref({
   placeType: "",
   nearbyMRTStation: "台北車站捷運站",
   floor: "3層樓",
+  informationURL: "",
+  MapURL: "",
 });
 
 // 重置表單
@@ -76,6 +78,8 @@ const resetForm = () => {
     placeType: "",
     nearbyMRTStation: "",
     floor: "",
+    informationURL: "",
+    MapURL: "",
   };
 };
 
@@ -98,7 +102,6 @@ const handleEdit = (cafe) => {
   isModalOpen.value = true;
   currentForm.value = { ...cafe };
 };
-
 
 const handleSubmit = async () => {
   try {
@@ -210,131 +213,165 @@ const handleDelete = async (id) => {
       </table>
     </div>
 
-<!-- 彈窗 (Modal) -->
-<div v-if="isModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-  <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-2xl md:max-w-lg lg:max-w-xl mx-4">
-    <h2 class="text-2xl font-bold mb-4">{{ isEditMode ? "修改咖啡廳" : "新增咖啡廳" }}</h2>
-    <form @submit.prevent="handleSubmit" class="space-y-4">
-      <div>
-        <label class="block text-gray-700 font-semibold mb-2">ID</label>
-        <input
-          type="text"
-          class="w-full px-4 py-2 border rounded-lg bg-gray-100 focus:outline-none"
-          v-model="currentForm.id"
-          readonly />
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label class="block text-gray-700 font-semibold mb-2">名稱</label>
-          <input
-            type="text"
-            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            v-model="currentForm.StoreName" />
-        </div>
-        <div>
-          <label class="block text-gray-700 font-semibold mb-2">城市</label>
-          <input
-            type="text"
-            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            v-model="currentForm.city" />
-        </div>
-        <div>
-          <label class="block text-gray-700 font-semibold mb-2">地區</label>
-          <input
-            type="text"
-            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            v-model="currentForm.district" />
-        </div>
-        <div>
-          <label class="block text-gray-700 font-semibold mb-2">地址</label>
-          <input
-            type="text"
-            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            v-model="currentForm.address" />
-        </div>
-        <div>
-          <label class="block text-gray-700 font-semibold mb-2">排序</label>
-          <input
-            type="text"
-            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            v-model="currentForm.order" />
-        </div>
-        <div>
-          <label class="block text-gray-700 font-semibold mb-2">有無插座</label>
-          <select
-            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            v-model="currentForm.hasOutlet">
-            <option :value="true">是</option>
-            <option :value="false">否</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-gray-700 font-semibold mb-2">最低消費</label>
-          <input
-            type="number"
-            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            v-model="currentForm.minSpend" />
-        </div>
-        <div>
-          <label class="block text-gray-700 font-semibold mb-2">類型</label>
-          <select
-            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            v-model="currentForm.placeType">
-            <option value="coffee_shop">咖啡廳</option>
-            <option value="restaurant">餐飲場所(一般)</option>
-            <option value="library">圖書館</option>
-            <option value="other">其他</option>
-          </select>
-        </div>
-      </div>
-      <div>
-        <label class="block text-gray-700 font-semibold mb-2">附近捷運站</label>
-        <input
-          type="text"
-          class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          v-model="currentForm.nearbyMRTStation" />
-      </div>
-      <div>
-        <label class="block text-gray-700 font-semibold mb-2">樓層</label>
-        <input
-          type="text"
-          class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          v-model="currentForm.floor" />
-      </div>
-      <div>
-        <label class="block text-gray-700 font-semibold mb-2">空間圖片</label>
-        <input
-          type="url"
-          class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          v-model="currentForm.spacePhoto" />
-      </div>
+    <!-- 彈窗 (Modal) -->
+    <div v-if="isModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+      <div
+        class="bg-white rounded-lg shadow-lg p-6 w-full max-w-2xl md:max-w-lg lg:max-w-xl mx-4 max-h-[80vh] overflow-y-auto">
+        <h2 class="text-2xl font-bold mb-4">{{ isEditMode ? "修改咖啡廳" : "新增咖啡廳" }}</h2>
+        <form @submit.prevent="handleSubmit" class="space-y-4">
+          <div>
+            <label class="block text-gray-700 font-semibold mb-2">ID</label>
+            <input
+              type="text"
+              class="w-full px-4 py-2 border rounded-lg bg-gray-100 focus:outline-none"
+              v-model="currentForm.id"
+              readonly />
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-gray-700 font-semibold mb-2">名稱</label>
+              <input
+                type="text"
+                class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                v-model="currentForm.StoreName" />
+            </div>
+            <div>
+              <label class="block text-gray-700 font-semibold mb-2">城市</label>
+              <input
+                type="text"
+                class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                v-model="currentForm.city" />
+            </div>
+            <div>
+              <label class="block text-gray-700 font-semibold mb-2">地區</label>
+              <input
+                type="text"
+                class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                v-model="currentForm.district" />
+            </div>
+            <div>
+              <label class="block text-gray-700 font-semibold mb-2">地址</label>
+              <input
+                type="text"
+                class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                v-model="currentForm.address" />
+            </div>
+            <div>
+              <label class="block text-gray-700 font-semibold mb-2">排序</label>
+              <input
+                type="text"
+                class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                v-model="currentForm.order" />
+            </div>
+            <div>
+              <label class="block text-gray-700 font-semibold mb-2">有無插座</label>
+              <select
+                class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                v-model="currentForm.hasOutlet">
+                <option :value="true">是</option>
+                <option :value="false">否</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-gray-700 font-semibold mb-2">最低消費</label>
+              <input
+                type="number"
+                class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                v-model="currentForm.minSpend" />
+            </div>
+            <div>
+              <label class="block text-gray-700 font-semibold mb-2">類型</label>
+              <select
+                class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                v-model="currentForm.placeType">
+                <option value="coffee_shop">咖啡廳</option>
+                <option value="restaurant">餐飲場所(一般)</option>
+                <option value="library">圖書館</option>
+                <option value="other">其他</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label class="block text-gray-700 font-semibold mb-2">附近捷運站</label>
+            <input
+              type="text"
+              class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              v-model="currentForm.nearbyMRTStation" />
+          </div>
+          <div>
+            <label class="block text-gray-700 font-semibold mb-2">樓層</label>
+            <input
+              type="text"
+              class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              v-model="currentForm.floor" />
+          </div>
+          <div>
+            <label class="block text-gray-700 font-semibold mb-2">空間圖片</label>
+            <input
+              type="url"
+              class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              v-model="currentForm.spacePhoto" />
+          </div>
 
-      <!-- 營業時間欄位 -->
-      <div>
-        <label class="block text-gray-700 font-semibold mb-2">營業時間</label>
-        <input
-          type="text"
-          class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          v-model="currentForm.businessHours"
-          placeholder="例如：08:00 - 22:00" />
-      </div>
+          <!-- 營業時間欄位 -->
+          <div>
+            <label class="block text-gray-700 font-semibold mb-2">營業時間</label>
+            <input
+              type="text"
+              class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              v-model="currentForm.businessHours"
+              placeholder="例如：08:00 - 22:00" />
+          </div>
+          <div>
+            <label class="block text-gray-700 font-semibold mb-2">更多資訊</label>
+            <input
+              type="url"
+              class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              v-model="currentForm.informationURL"
+              placeholder="輸入更多資訊的連結" />
+          </div>
+          <div>
+            <label class="block text-gray-700 font-semibold mb-2">導航連結</label>
+            <input
+              type="url"
+              class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              v-model="currentForm.MapURL"
+              placeholder="輸入導航連結" />
+          </div>
 
-      <div class="flex justify-end space-x-4 mt-6">
-        <button
-          type="button"
-          @click="isModalOpen = false"
-          class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition">
-          取消
-        </button>
-        <button
-          type="submit"
-          class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
-          確定
-        </button>
+          <div class="flex justify-end space-x-4 mt-6">
+            <button
+              type="button"
+              @click="isModalOpen = false"
+              class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition">
+              取消
+            </button>
+            <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
+              確定
+            </button>
+          </div>
+        </form>
       </div>
-    </form>
-  </div>
-</div>
-
+    </div>
   </div>
 </template>
+<style>
+/* 自定義滾動條樣式 */
+::-webkit-scrollbar {
+  width: 8px; /* 滾動條寬度 */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3); /* 滾動條的顏色 */
+  border-radius: 4px; /* 圓角 */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.5); /* 滾動條懸停時的顏色 */
+}
+
+::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.1); /* 滾動條背景 */
+  border-radius: 4px;
+}
+</style>
