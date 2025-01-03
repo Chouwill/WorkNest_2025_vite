@@ -51,6 +51,7 @@ const currentForm = ref({
   district: "",
   address: "",
   order: "",
+  businessHours: "",
   spacePhoto: "",
   hasOutlet: false,
   minSpend: 0,
@@ -68,6 +69,7 @@ const resetForm = () => {
     district: "",
     address: "",
     order: "",
+    businessHours: "",
     spacePhoto: "",
     hasOutlet: false,
     minSpend: 0,
@@ -97,46 +99,7 @@ const handleEdit = (cafe) => {
   currentForm.value = { ...cafe };
 };
 
-// 提交表單
-// const handleSubmit = async () => {
-//   try {
-//     if (!currentForm.value) {
-//       console.error("表單資料未定義");
-//       return;
-//     }
 
-//     if (isEditMode.value) {
-//       if (!currentForm.value.id) {
-//         console.error("編輯模式下，表單缺少 id");
-//         return;
-//       }
-
-//       await apiClient.put(`/${currentForm.value.id}`, currentForm.value);
-//       console.log("更新成功");
-
-//       const index = information.value.findIndex((item) => item.id === currentForm.value.id);
-//       if (index !== -1) {
-//         information.value[index] = { ...currentForm.value };
-//       }
-//     } else {
-//       const response = await apiClient.post("/", currentForm.value);
-
-//       if (!response.data || !response.data.id) {
-//         console.error("新增失敗，後端回應中缺少 id");
-//         return;
-//       }
-
-//       console.log("新增成功");
-
-//       information.value.push({ ...currentForm.value, id: response.data.id });
-//     }
-
-//     isModalOpen.value = false;
-//     resetForm();
-//   } catch (error) {
-//     console.error("提交失敗", error);
-//   }
-// };
 const handleSubmit = async () => {
   try {
     if (!currentForm.value) {
@@ -247,118 +210,131 @@ const handleDelete = async (id) => {
       </table>
     </div>
 
-    <!-- 彈窗 (Modal) -->
-    <div v-if="isModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-2xl md:max-w-lg lg:max-w-xl mx-4">
-        <h2 class="text-2xl font-bold mb-4">{{ isEditMode ? "修改咖啡廳" : "新增咖啡廳" }}</h2>
-        <form @submit.prevent="handleSubmit" class="space-y-4">
-          <div>
-            <label class="block text-gray-700 font-semibold mb-2">ID</label>
-            <input
-              type="text"
-              class="w-full px-4 py-2 border rounded-lg bg-gray-100 focus:outline-none"
-              v-model="currentForm.id"
-              readonly />
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-gray-700 font-semibold mb-2">名稱</label>
-              <input
-                type="text"
-                class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                v-model="currentForm.StoreName" />
-            </div>
-            <div>
-              <label class="block text-gray-700 font-semibold mb-2">城市</label>
-              <input
-                type="text"
-                class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                v-model="currentForm.city" />
-            </div>
-            <div>
-              <label class="block text-gray-700 font-semibold mb-2">地區</label>
-              <input
-                type="text"
-                class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                v-model="currentForm.district" />
-            </div>
-            <div>
-              <label class="block text-gray-700 font-semibold mb-2">地址</label>
-              <input
-                type="text"
-                class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                v-model="currentForm.address" />
-            </div>
-            <div>
-              <label class="block text-gray-700 font-semibold mb-2">排序</label>
-              <input
-                type="text"
-                class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                v-model="currentForm.order" />
-            </div>
-            <div>
-              <label class="block text-gray-700 font-semibold mb-2">有無插座</label>
-              <select
-                class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                v-model="currentForm.hasOutlet">
-                <option :value="true">是</option>
-                <option :value="false">否</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-gray-700 font-semibold mb-2">最低消費</label>
-              <input
-                type="number"
-                class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                v-model="currentForm.minSpend" />
-            </div>
-            <div>
-              <label class="block text-gray-700 font-semibold mb-2">類型</label>
-              <select
-                class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                v-model="currentForm.placeType">
-                <option value="coffee_shop">咖啡廳</option>
-                <option value="restaurant">餐飲場所(一般)</option>
-                <option value="library">圖書館</option>
-                <option value="other">其他</option>
-              </select>
-            </div>
-          </div>
-          <div>
-            <label class="block text-gray-700 font-semibold mb-2">附近捷運站</label>
-            <input
-              type="text"
-              class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              v-model="currentForm.nearbyMRTStation" />
-          </div>
-          <div>
-            <label class="block text-gray-700 font-semibold mb-2">樓層</label>
-            <input
-              type="text"
-              class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              v-model="currentForm.floor" />
-          </div>
-          <div>
-            <label class="block text-gray-700 font-semibold mb-2">空間圖片</label>
-            <input
-              type="url"
-              class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              v-model="currentForm.spacePhoto" />
-          </div>
-
-          <div class="flex justify-end space-x-4 mt-6">
-            <button
-              type="button"
-              @click="isModalOpen = false"
-              class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition">
-              取消
-            </button>
-            <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
-              確定
-            </button>
-          </div>
-        </form>
+<!-- 彈窗 (Modal) -->
+<div v-if="isModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+  <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-2xl md:max-w-lg lg:max-w-xl mx-4">
+    <h2 class="text-2xl font-bold mb-4">{{ isEditMode ? "修改咖啡廳" : "新增咖啡廳" }}</h2>
+    <form @submit.prevent="handleSubmit" class="space-y-4">
+      <div>
+        <label class="block text-gray-700 font-semibold mb-2">ID</label>
+        <input
+          type="text"
+          class="w-full px-4 py-2 border rounded-lg bg-gray-100 focus:outline-none"
+          v-model="currentForm.id"
+          readonly />
       </div>
-    </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-gray-700 font-semibold mb-2">名稱</label>
+          <input
+            type="text"
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            v-model="currentForm.StoreName" />
+        </div>
+        <div>
+          <label class="block text-gray-700 font-semibold mb-2">城市</label>
+          <input
+            type="text"
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            v-model="currentForm.city" />
+        </div>
+        <div>
+          <label class="block text-gray-700 font-semibold mb-2">地區</label>
+          <input
+            type="text"
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            v-model="currentForm.district" />
+        </div>
+        <div>
+          <label class="block text-gray-700 font-semibold mb-2">地址</label>
+          <input
+            type="text"
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            v-model="currentForm.address" />
+        </div>
+        <div>
+          <label class="block text-gray-700 font-semibold mb-2">排序</label>
+          <input
+            type="text"
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            v-model="currentForm.order" />
+        </div>
+        <div>
+          <label class="block text-gray-700 font-semibold mb-2">有無插座</label>
+          <select
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            v-model="currentForm.hasOutlet">
+            <option :value="true">是</option>
+            <option :value="false">否</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-gray-700 font-semibold mb-2">最低消費</label>
+          <input
+            type="number"
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            v-model="currentForm.minSpend" />
+        </div>
+        <div>
+          <label class="block text-gray-700 font-semibold mb-2">類型</label>
+          <select
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            v-model="currentForm.placeType">
+            <option value="coffee_shop">咖啡廳</option>
+            <option value="restaurant">餐飲場所(一般)</option>
+            <option value="library">圖書館</option>
+            <option value="other">其他</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <label class="block text-gray-700 font-semibold mb-2">附近捷運站</label>
+        <input
+          type="text"
+          class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          v-model="currentForm.nearbyMRTStation" />
+      </div>
+      <div>
+        <label class="block text-gray-700 font-semibold mb-2">樓層</label>
+        <input
+          type="text"
+          class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          v-model="currentForm.floor" />
+      </div>
+      <div>
+        <label class="block text-gray-700 font-semibold mb-2">空間圖片</label>
+        <input
+          type="url"
+          class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          v-model="currentForm.spacePhoto" />
+      </div>
+
+      <!-- 營業時間欄位 -->
+      <div>
+        <label class="block text-gray-700 font-semibold mb-2">營業時間</label>
+        <input
+          type="text"
+          class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          v-model="currentForm.businessHours"
+          placeholder="例如：08:00 - 22:00" />
+      </div>
+
+      <div class="flex justify-end space-x-4 mt-6">
+        <button
+          type="button"
+          @click="isModalOpen = false"
+          class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition">
+          取消
+        </button>
+        <button
+          type="submit"
+          class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
+          確定
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
   </div>
 </template>
