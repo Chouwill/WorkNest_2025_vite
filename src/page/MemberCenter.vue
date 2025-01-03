@@ -63,7 +63,7 @@ async function memberRegister() {
   console.log("發送的登入數據:", RegisterData);
   try {
     const response = await apiClient.post("/register", RegisterData);
-    console.log("註冊註冊成功:", response);
+    // console.log("註冊註冊成功:", response);
     isLogin.value = !isLogin.value;
 
     return response;
@@ -72,7 +72,7 @@ async function memberRegister() {
     console.log("註冊錯誤:", error);
     // 提取錯誤訊息並顯示彈窗
     ErrorMessage.value.RegisterStatus = error.response?.data?.message || "註冊失敗";
-    console.log(ErrorMessage.value.RegisterStatus);
+    // console.log(ErrorMessage.value.RegisterStatus);
     isModalVisible.value = true; // 顯示彈窗
   }
 }
@@ -254,9 +254,9 @@ async function memberRegister() {
     </div>
   </div>
   <!-- email 輸入框 -->
-  <div>email: {{ LoginForm.email }}</div>
+  <!-- <div>email: {{ LoginForm.email }}</div>
   <div>: {{ LoginForm.serialtext }}</div>
-  <div>: {{ LoginForm.nickname }}</div>
+  <div>: {{ LoginForm.nickname }}</div> -->
 </template>
 
 <style scoped>

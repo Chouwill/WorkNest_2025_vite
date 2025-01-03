@@ -105,7 +105,7 @@ apiClient.interceptors.request.use(
     return config;
   },
   (error) => {
-    console.error("請求錯誤:", error);
+    // console.error("請求錯誤:", error);
     return Promise.reject(error);
   }
 );
@@ -113,17 +113,17 @@ apiClient.interceptors.request.use(
 // 回應攔截器
 apiClient.interceptors.response.use(
   (response) => {
-    console.log("收到回應:", response.data);
+    // console.log("收到回應:", response.data);
     return response.data; // 直接返回數據
   },
   (error) => {
     // **修改點 3: 增加錯誤處理提示**
     if (error.response?.status === 401) {
       // console.error("認證失敗 - 請確認 API Key 是否正確");
-      console.log("認證失敗 - 請確認 API Key 是否正確");
+      // console.log("認證失敗 - 請確認 API Key 是否正確");
     }
     // console.error("回應錯誤:", error.response || error);
-    console.log("回應錯誤:", error.response || error);
+    // console.log("回應錯誤:", error.response || error);
     return Promise.reject(error);
   }
 );
