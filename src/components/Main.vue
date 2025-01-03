@@ -217,13 +217,17 @@ const toggleStoreModal = () => {
               </div>
               <!-- 連結按鈕區域 -->
               <div class="mt-4 flex gap-3">
+                <!-- 更多資訊按鈕 -->
                 <a
+                  v-if="store.informationURL && store.informationURL.trim() !== ''"
                   :href="store.informationURL"
                   target="_blank"
                   rel="noopener noreferrer"
                   class="px-4 py-2 text-sm font-medium text-white bg-[#8B3D0E] hover:bg-[#6E300B] rounded-md focus:outline-none focus:ring-2 focus:ring-[#8B3D0E] focus:ring-offset-2">
                   更多資訊
                 </a>
+
+                <!-- 導航到店按鈕 -->
                 <a
                   :href="store.MapURL"
                   target="_blank"
