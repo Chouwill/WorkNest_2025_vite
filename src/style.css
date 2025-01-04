@@ -5,3 +5,9 @@
 div{
     cursor: pointer;
 }
+
+.custom-city-selector select {
+    border: 1px solid #d1d5db;
+    margin-right: 1rem;
+    padding: 0.5rem;
+}

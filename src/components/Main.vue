@@ -2,6 +2,10 @@
 import { ref, onMounted, computed } from "vue";
 import { get } from "../api/request";
 
+import CitySelect from './citySelect/index.vue'
+
+
+
 const information = ref([]);
 const loading = ref(false);
 const error = ref(null);
@@ -46,10 +50,13 @@ async function getInformation() {
 
 onMounted(() => {
   getInformation();
+  // const cts = new TwCitySelector();
+  // console.log(cts)
 });
 
 // 縣市和行政區的選擇狀態
 const selectedCity = ref("");
+const selectedDistrict = ref("");
 const hasOutlet = ref(false);
 const searchQuery = ref("");
 
@@ -58,6 +65,10 @@ const filteredStores = computed(() => {
   return information.value.filter((store) => {
     // 城市篩選
     const cityMatch = !selectedCity.value || store.city === selectedCity.value;
+
+    // 行政區篩選
+    const districtMatch =
+      !selectedDistrict.value || store.district === selectedDistrict.value;
 
     // 插座篩選
     const outletMatch = !hasOutlet.value || store.powerOutlet === true;
@@ -68,7 +79,7 @@ const filteredStores = computed(() => {
       store.StoreName.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
       store.address.toLowerCase().includes(searchQuery.value.toLowerCase());
 
-    return cityMatch && outletMatch && searchMatch;
+    return cityMatch && districtMatch && outletMatch && searchMatch;
   });
 });
 
@@ -88,6 +99,12 @@ const toggleStoreModal = () => {
   //   StoreModal.value = false;
   // }
 };
+
+
+const onCicyChange = (info) => {
+  selectedCity.value = info.city;
+  selectedDistrict.value = info.district;
+}
 </script>
 
 <template>
@@ -107,13 +124,15 @@ const toggleStoreModal = () => {
       <!-- 篩選控制面板 -->
       <div class="filter-panel flex flex-col sm:flex-row items-center justify-between gap-4 my-4">
         <!-- 城市篩選 -->
-        <select
+         <CitySelect @change="onCicyChange" />
+        <!-- <div class="custom-city-selector" role="tw-city-selector" data-only="台北市,新北市"></div> -->
+        <!-- <select
           v-model="selectedCity"
           class="filter-select border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
           <option value="">全部城市</option>
           <option value="台北">台北</option>
           <option value="新北">新北</option>
-        </select>
+        </select> -->
 
         <!-- 插座篩選 -->
         <label class="filter-checkbox flex items-center gap-2 text-gray-700">
