@@ -123,6 +123,9 @@ const handleSubmit = async () => {
       if (index !== -1) {
         information.value[index] = { ...currentForm.value };
       }
+
+      // 回傳當筆修改後的所有屬性資料
+      console.log("修改後的當筆資料：", { ...currentForm.value });
     } else {
       // 新增資料
       const response = await apiClient.post("/", currentForm.value);
@@ -137,7 +140,11 @@ const handleSubmit = async () => {
       console.log("新增成功");
 
       // 新增到前端資料
-      information.value.push({ ...currentForm.value, id: newId });
+      const newEntry = { ...currentForm.value, id: newId };
+      information.value.push(newEntry);
+
+      // 回傳當筆新增後的所有屬性資料
+      console.log("新增後的當筆資料：", newEntry);
     }
 
     isModalOpen.value = false; // 關閉模態框
@@ -146,6 +153,7 @@ const handleSubmit = async () => {
     console.error("提交失敗", error);
   }
 };
+
 
 // 刪除資料API
 const handleDelete = async (id) => {

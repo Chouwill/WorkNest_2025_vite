@@ -209,7 +209,7 @@ const toggleStoreModal = () => {
               </div>
               <div class="mt-3 flex flex-wrap gap-1.5">
                 <span class="px-2 py-0.5 bg-blue-100 text-blue-800 text-xs rounded-full">
-                  插座: {{ store.powerOutlet ? "有" : "無" }}
+                  插座: {{ store.hasOutlet ? "有" : "無" }}
                 </span>
                 <span class="px-2 py-0.5 bg-purple-100 text-purple-800 text-xs rounded-full">
                   最低消費: {{ store.minSpend }}元
