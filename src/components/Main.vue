@@ -2,9 +2,7 @@
 import { ref, onMounted, computed } from "vue";
 import { get } from "../api/request";
 
-import CitySelect from './citySelect/index.vue'
-
-
+import CitySelect from "./citySelect/index.vue";
 
 const information = ref([]);
 const loading = ref(false);
@@ -67,8 +65,7 @@ const filteredStores = computed(() => {
     const cityMatch = !selectedCity.value || store.city === selectedCity.value;
 
     // 行政區篩選
-    const districtMatch =
-      !selectedDistrict.value || store.district === selectedDistrict.value;
+    const districtMatch = !selectedDistrict.value || store.district === selectedDistrict.value;
 
     // 插座篩選
     const outletMatch = !hasOutlet.value || store.powerOutlet === true;
@@ -100,11 +97,23 @@ const toggleStoreModal = () => {
   // }
 };
 
-
 const onCicyChange = (info) => {
   selectedCity.value = info.city;
   selectedDistrict.value = info.district;
-}
+};
+
+
+const getTagClass = (index) => {
+  // 固定顏色的樣式
+  const tagClasses = [
+    "bg-[#FEF3C7] text-yellow-800", // 淡黃色
+    "bg-[#FFE4E6] text-pink-800",   // 淡粉紅色
+    "bg-[#D1FAE5] text-emerald-800" // 淡薄荷綠色
+  ];
+
+  // 根據索引返回對應的樣式
+  return tagClasses[index % tagClasses.length];
+};
 </script>
 
 <template>
@@ -124,16 +133,7 @@ const onCicyChange = (info) => {
       <!-- 篩選控制面板 -->
       <div class="filter-panel flex flex-col sm:flex-row items-center justify-between gap-4 my-4">
         <!-- 城市篩選 -->
-         <CitySelect @change="onCicyChange" />
-        <!-- <div class="custom-city-selector" role="tw-city-selector" data-only="台北市,新北市"></div> -->
-        <!-- <select
-          v-model="selectedCity"
-          class="filter-select border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-          <option value="">全部城市</option>
-          <option value="台北">台北</option>
-          <option value="新北">新北</option>
-        </select> -->
-
+        <CitySelect @change="onCicyChange" />
         <!-- 插座篩選 -->
         <label class="filter-checkbox flex items-center gap-2 text-gray-700">
           <input
@@ -226,6 +226,19 @@ const onCicyChange = (info) => {
                   <p class="text-gray-600 text-sm truncate">鄰近捷運站: {{ store.nearbyMRTStation }}</p>
                 </div>
               </div>
+
+              <!-- StoreTage 標籤區域 -->
+              
+              <div class="mt-3 flex flex-wrap gap-2">
+                <span
+                  v-for="(tag, index) in store.StoreTage"
+                  :key="tag"
+                  :class="getTagClass(index)"
+                  class="px-3 py-1 text-xs font-medium rounded-full">
+                  {{ tag }}
+                </span>
+              </div>
+
               <div class="mt-3 flex flex-wrap gap-1.5">
                 <span class="px-2 py-0.5 bg-blue-100 text-blue-800 text-xs rounded-full">
                   插座: {{ store.hasOutlet ? "有" : "無" }}
@@ -234,6 +247,7 @@ const onCicyChange = (info) => {
                   最低消費: {{ store.minSpend }}元
                 </span>
               </div>
+
               <!-- 連結按鈕區域 -->
               <div class="mt-4 flex gap-3">
                 <!-- 更多資訊按鈕 -->

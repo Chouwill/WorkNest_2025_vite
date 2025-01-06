@@ -60,7 +60,29 @@ const currentForm = ref({
   floor: "3層樓",
   informationURL: "",
   MapURL: "",
+  StoreTage: [], // 將 StoreTage 定義為陣列
 });
+
+// 暫存標籤的輸入值
+const newTag = ref("");
+
+// 新增標籤
+const addTag = () => {
+  if (!Array.isArray(currentForm.value.StoreTage)) {
+    currentForm.value.StoreTage = []; // 如果 StoreTage 不是陣列，初始化為空陣列
+  }
+
+  const trimmedTag = newTag.value.trim(); // 去掉輸入的空白
+  if (trimmedTag && !currentForm.value.StoreTage.includes(trimmedTag)) {
+    currentForm.value.StoreTage.push(trimmedTag); // 新增標籤
+  }
+  newTag.value = ""; // 清空輸入框
+};
+
+// 刪除標籤
+const removeTag = (tag) => {
+  currentForm.value.StoreTage = currentForm.value.StoreTage.filter((t) => t !== tag);
+};
 
 // 重置表單
 const resetForm = () => {
@@ -80,6 +102,7 @@ const resetForm = () => {
     floor: "",
     informationURL: "",
     MapURL: "",
+    StoreTage: [], // 重置為空陣列
   };
 };
 
@@ -153,7 +176,6 @@ const handleSubmit = async () => {
     console.error("提交失敗", error);
   }
 };
-
 
 // 刪除資料API
 const handleDelete = async (id) => {
@@ -345,6 +367,37 @@ const handleDelete = async (id) => {
               class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               v-model="currentForm.MapURL"
               placeholder="輸入導航連結" />
+          </div>
+          <div>
+            <label class="block text-gray-700 font-semibold mb-2">商店標籤</label>
+            <div class="flex items-center gap-2">
+              <!-- 輸入框：用於輸入標籤 -->
+              <input
+                type="text"
+                v-model="newTag"
+                @keyup.enter="addTag"
+                placeholder="輸入標籤後按 Enter"
+                class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <!-- 新增按鈕 -->
+              <button
+                type="button"
+                @click="addTag"
+                class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
+                新增
+              </button>
+            </div>
+            <!-- 標籤顯示區域 -->
+            <div class="flex flex-wrap gap-2 mt-2">
+              <span
+                v-for="tag in currentForm.StoreTage"
+                :key="tag"
+                class="px-3 py-1 bg-blue-500 text-white rounded-full flex items-center gap-2">
+                {{ tag }}
+                <button type="button" @click="removeTag(tag)" class="text-white hover:text-gray-300 focus:outline-none">
+                  &times;
+                </button>
+              </span>
+            </div>
           </div>
 
           <div class="flex justify-end space-x-4 mt-6">
