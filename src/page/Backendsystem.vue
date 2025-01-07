@@ -66,6 +66,10 @@ const currentForm = ref({
 // 暫存標籤的輸入值
 const newTag = ref("");
 
+// 儲存用戶輸入的 HTML 程式碼，使用統一樣式的類名
+const iconHTML = ref("<i class='fa fa-coffee icon-default'></i>"); // 預設值為咖啡圖示
+
+
 // 新增標籤
 const addTag = () => {
   if (!Array.isArray(currentForm.value.StoreTage)) {
@@ -74,10 +78,13 @@ const addTag = () => {
 
   const trimmedTag = newTag.value.trim(); // 去掉輸入的空白
   if (trimmedTag && !currentForm.value.StoreTage.includes(trimmedTag)) {
-    currentForm.value.StoreTage.push(trimmedTag); // 新增標籤
+    // 將 Icon 與標籤文字拼接
+    const tagWithIcon = `${iconHTML.value} ${trimmedTag}`;
+    currentForm.value.StoreTage.push(tagWithIcon); // 新增標籤（包含 Icon）
   }
   newTag.value = ""; // 清空輸入框
 };
+
 
 // 刪除標籤
 const removeTag = (tag) => {
@@ -188,6 +195,9 @@ const handleDelete = async (id) => {
     console.error("刪除失敗", error);
   }
 };
+
+// 儲存用戶輸入的 HTML 程式碼
+// const iconHTML = ref("<i class='fa fa-coffee'></i>"); // 預設值為咖啡圖示
 </script>
 
 <template>
@@ -398,6 +408,26 @@ const handleDelete = async (id) => {
                 </button>
               </span>
             </div>
+            <div class="icon-render-demo p-6">
+              <!-- 輸入框 -->
+              <div class="mb-4">
+                <label for="iconInput" class="block text-gray-700 font-semibold mb-2">
+                  輸入 FontAwesome HTML 程式碼：
+                </label>
+                <input
+                  id="iconInput"
+                  type="text"
+                  v-model="iconHTML"
+                  class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="例如：<i class='fa fa-coffee'></i>" />
+              </div>
+
+              <!-- 即時渲染區域 -->
+              <div class="mt-4">
+                <p class="text-gray-700 font-semibold mb-2">即時渲染結果：</p>
+                <div v-html="iconHTML" class="text-3xl"></div>
+              </div>
+            </div>
           </div>
 
           <div class="flex justify-end space-x-4 mt-6">
@@ -435,4 +465,12 @@ const handleDelete = async (id) => {
   background-color: rgba(0, 0, 0, 0.1); /* 滾動條背景 */
   border-radius: 4px;
 }
+
+/* 表單預覽ICON大小 */
+.icon-default {
+  font-size: 16px;
+  color: #555;
+  /* color: #555; */
+}
+
 </style>

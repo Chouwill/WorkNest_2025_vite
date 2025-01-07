@@ -102,13 +102,12 @@ const onCicyChange = (info) => {
   selectedDistrict.value = info.district;
 };
 
-
 const getTagClass = (index) => {
   // 固定顏色的樣式
   const tagClasses = [
     "bg-[#FEF3C7] text-yellow-800", // 淡黃色
-    "bg-[#FFE4E6] text-pink-800",   // 淡粉紅色
-    "bg-[#D1FAE5] text-emerald-800" // 淡薄荷綠色
+    "bg-[#FFE4E6] text-pink-800", // 淡粉紅色
+    "bg-[#D1FAE5] text-emerald-800", // 淡薄荷綠色
   ];
 
   // 根據索引返回對應的樣式
@@ -228,14 +227,14 @@ const getTagClass = (index) => {
               </div>
 
               <!-- StoreTage 標籤區域 -->
-              
               <div class="mt-3 flex flex-wrap gap-2">
                 <span
                   v-for="(tag, index) in store.StoreTage"
-                  :key="tag"
+                  :key="index"
                   :class="getTagClass(index)"
-                  class="px-3 py-1 text-xs font-medium rounded-full">
-                  {{ tag }}
+                  class="px-3 py-1 text-xs font-medium rounded-full flex items-center gap-1">
+                  <span v-html="tag" class="icon-large"></span>
+                  <!-- Icon 使用 icon-large 類名 -->
                 </span>
               </div>
 
@@ -290,4 +289,10 @@ div {
     font-size: 35px;
   }
 }
+
+.icon-large {
+  font-size: 16px; /* Icon 大小 */
+  vertical-align: middle; /* 確保 Icon 與文字對齊 */
+}
+
 </style>
