@@ -69,7 +69,8 @@ async function memberRegister() {
     passwd: RegisterForm.value.passwd.trim(),
     nickname: RegisterForm.value.nickname.trim(),
   };
-  console.log("發送的註冊數據:", RegisterData);
+  // console.log("發送的註冊數據:", RegisterData);
+  // console.log("發送的註冊數據:");
   try {
     const response = await apiClient.post("/register", RegisterData);
 
@@ -78,14 +79,15 @@ async function memberRegister() {
     ModalType.value = "success"; // 設置為成功類型
     isModalVisible.value = true;
 
-    console.log("註冊成功:", response);
+    // console.log("註冊成功:", response);
+    // console.log("註冊成功:");
 
     // 切換到登入表單
     isLogin.value = true;
 
     return response;
   } catch (error) {
-    console.error("註冊錯誤:", error);
+    // console.error("註冊錯誤:", error);
 
     // 錯誤訊息
     ModalMessage.value = error.response?.data?.message || "註冊失敗";
