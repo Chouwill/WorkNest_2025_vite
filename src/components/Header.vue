@@ -96,6 +96,7 @@ const handleLoginOutButtonClick = () => {
   // 顯示登出提示框，隱藏登出按鈕
   isLoginOut.value = true;
   showNewButton.value = false;
+  router.push("/"); // 導航到登入頁
 };
 
 const closeLogout = () => {

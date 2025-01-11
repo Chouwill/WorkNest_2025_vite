@@ -9,10 +9,10 @@ const router = useRouter();
 // 登入相關數據
 const isLogin = ref(true); // 控制是否顯示登入表單
 const LoginForm = ref({
-  email: "bash@gmail.com",
-  uid: "wqqQhMlueLTxZps1r5EqCHotBP22",
+  email: "user@gmail.com",
+  uid: "CORpELyL0eaPN5Ed4Vhbnbb4a8D3",
   password: "",
-  nickname: "12345678912345E",
+  nickname: "user5678912345E",
 });
 
 // 註冊相關數據
