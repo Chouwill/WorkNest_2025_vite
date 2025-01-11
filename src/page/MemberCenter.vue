@@ -45,6 +45,9 @@ async function memberLogin() {
     isModalVisible.value = true;
 
     console.log("登入成功:", response);
+    const LoginStatus = true;
+    localStorage.setItem("當前登入紀錄", LoginStatus);
+    localStorage.setItem("LoginStatus", LoginStatus);
 
     // 3 秒後跳轉
     setTimeout(() => {
