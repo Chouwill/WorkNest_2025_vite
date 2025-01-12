@@ -1,16 +1,7 @@
 <template>
   <div class="p-8 bg-gradient-to-b from-gray-100 to-gray-50 min-h-screen flex flex-col items-center">
-    <!-- 歡迎標語 -->
-    <div class="mb-10 text-center">
-      <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight">
-        歡迎，
-        <span class="text-blue-600">{{ roleName }}</span>
-        {{ nickname }}！
-      </h1>
-      <p class="text-gray-500 mt-2 text-lg">管理您的個人資料與收藏清單</p>
-    </div>
 
-    <!-- 收藏清單 -->
+    <!-- 收藏清單卡片 -->
     <div class="w-full max-w-3xl bg-white p-8 rounded-xl shadow-xl">
       <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b pb-2">我的收藏清單</h2>
 
@@ -40,27 +31,38 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { computed } from "vue";
 import { useFavoriteStore } from "../store/Favorite";
+import { useUserInfoStore } from "../store/User";
 
-// 定義響應式變數
-const roleName = ref("會員");
-const nickname = ref("小明");
+// 從 Pinia Store 中讀取數據
+const userInfoStore = useUserInfoStore();
+const uid = computed(() => userInfoStore.uid);
+const email = computed(() => userInfoStore.email);
+const roleName = computed(() => userInfoStore.roleName);
+const nickname = computed(() => userInfoStore.nickname);
 
-// Pinia 的收藏清單 store
+// 收藏清單 Store
 const FavoriteList = useFavoriteStore();
-
-// 本地的顯示清單，設置為 computed
 const ShowList = computed(() => FavoriteList.items);
 
-// 刪除項目
-const removeStore = (id) => {
-  FavoriteList.removeItem(id);
+// 定義方法
+const saveChanges = () => {
+  alert("修改已儲存！");
 };
 
-// 清空清單
+const removeStore = (id) => {
+  if (confirm("確定要移除這個項目嗎？")) {
+    FavoriteList.removeItem(id);
+    console.log("移除項目 ID：", id);
+  }
+};
+
 const clearAllFavorites = () => {
-  FavoriteList.clearList();
+  if (confirm("確定要清空所有收藏嗎？")) {
+    FavoriteList.clearList();
+    console.log("清單已清空：", FavoriteList.items);
+  }
 };
 </script>
 
@@ -68,5 +70,9 @@ const clearAllFavorites = () => {
 /* 自定義樣式 */
 body {
   font-family: "Inter", sans-serif;
+}
+
+input:disabled {
+  opacity: 0.7;
 }
 </style>

@@ -3,8 +3,10 @@ import { ref } from "vue";
 import MemberModal from "../components/member/MemberModal.vue";
 import apiClient from "../api/axios";
 import { useRouter } from "vue-router";
+// import { useUserInfoStore } from "../store/User";
 
 const router = useRouter();
+// const SaveUserInfo = useUserInfoStore();
 
 // 登入相關數據
 const isLogin = ref(true); // 控制是否顯示登入表單
@@ -38,7 +40,7 @@ async function memberLogin() {
   try {
     const response = await apiClient.post("/login", loginData);
     localStorage.setItem("token", loginData.uid);
-
+    
     // 成功訊息
     ModalMessage.value = "登入成功！即將跳轉到後台系統...";
     ModalType.value = "success"; // 設置為成功類型
@@ -64,6 +66,11 @@ async function memberLogin() {
     isModalVisible.value = true;
   }
 }
+
+
+
+
+
 
 // 註冊函式
 async function memberRegister() {

@@ -1,9 +1,22 @@
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
+import vueDevTools from "vite-plugin-vue-devtools";
+import { createHtmlPlugin } from "vite-plugin-html";
 
 export default defineConfig({
   base: "/",
-  plugins: [vue()],
+  plugins: [
+    // 確保 vueDevTools 在 createHtmlPlugin 之前註冊
+    vueDevTools(),
+    vue(),
+    createHtmlPlugin({
+      inject: {
+        data: {
+          title: "My Vite App",
+        },
+      },
+    }),
+  ],
   server: {
     proxy: {
       "/api": {
@@ -23,3 +36,4 @@ export default defineConfig({
     },
   },
 });
+

@@ -17,6 +17,12 @@ const routes = [
     component: () => import("../page/Backendsystem.vue"),
     meta: { requiresAuth: true }, // 需要登入才能訪問
   },
+  {
+    path: "/UserCenter",
+    name: "UserCenter",
+    component: () => import("../page/UserCenter.vue"),
+    meta: { requiresAuth: false }, // 需要登入才能訪問
+  },
 ];
 
 const router = createRouter({

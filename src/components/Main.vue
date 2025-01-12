@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
 import { get } from "../api/request";
+import { useFavoriteStore } from "../store/Favorite";
 
 import CitySelect from "./citySelect/index.vue";
 
@@ -112,6 +113,14 @@ const getTagClass = (index) => {
 
   // 根據索引返回對應的樣式
   return tagClasses[index % tagClasses.length];
+};
+
+// 加入收藏
+const FavoriteList = useFavoriteStore();
+
+const addToList = (store) => {
+  FavoriteList.addItem(store);
+  console.log(FavoriteList.items);
 };
 </script>
 
@@ -267,6 +276,19 @@ const getTagClass = (index) => {
                   class="px-4 py-2 text-sm font-medium text-[#8B3D0E] bg-[#F9EFE8] hover:bg-[#EAD8C8] rounded-md focus:outline-none focus:ring-2 focus:ring-[#8B3D0E] focus:ring-offset-2">
                   導航到店
                 </a>
+                <!-- 加入收藏 -->
+                <button
+                  class="p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 bg-gray-100"
+                  @click="addToList(store)">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-6 w-6 text-gray-400"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m-7-7h14" />
+                  </svg>
+                </button>
               </div>
             </div>
           </div>
@@ -294,5 +316,4 @@ div {
   font-size: 16px; /* Icon 大小 */
   vertical-align: middle; /* 確保 Icon 與文字對齊 */
 }
-
 </style>
