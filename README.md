@@ -1,7 +1,61 @@
-# Vue 3 + Vite
+# 咖啡廳地圖網站
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+## 項目概述
+**開發時間：2024/3 ~ 仍在進行**
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
-# WorkNest_2025_vite
-# WorkNest_2025_vite
+本專案旨在打造一個提供詳細咖啡廳資訊的地圖網站，讓用戶能夠輕鬆篩選符合需求的咖啡廳，例如是否提供插座、最低消費、地點等條件。此外，提供管理後台，讓管理者可以靈活維護數據。
+
+---
+
+## 技術棧
+- **前端框架**：Vue 3
+- **狀態管理**：Pinia
+- **樣式**：Tailwind CSS
+- **後端框架**：Express.js
+- **資料庫與身份驗證**：Firebase
+
+---
+
+## 核心功能
+
+✅ **會員系統**
+- 使用 Firebase Auth 進行會員管理，支援用戶註冊與登入。
+
+✅ **多條件篩選查詢**
+- 用戶可依據 **地點、插座、最低消費** 等條件精準搜尋咖啡廳。
+
+✅ **後台管理系統**
+- 允許管理者 **新增、刪除與修改咖啡廳資訊**，提升數據管理的靈活性。
+
+---
+
+## 技術挑戰與解決方案
+
+### 🎯 挑戰：多條件篩選導致查詢效率下降
+**問題**：
+- 當查詢條件過多時，前端可能需要處理大量數據，影響搜尋效率。
+
+**解決方案**：
+- **優化查詢邏輯**，將多條件篩選邏輯轉移到 **後端 API**，減少前端負擔，提高搜尋準確性與效能。
+
+---
+
+## 如何運行專案
+
+### 📌 安裝專案依賴
+```bash
+npm install
+```
+
+### 🚀 啟動開發環境（前端）
+```bash
+npm run dev
+```
+
+### 📦 打包專案
+```bash
+npm run build
+```
+
+---
+
