@@ -229,6 +229,15 @@ async function memberRegister() {
                       v-model="RegisterForm.passwd" />
                   </div>
                   <div>
+                    <label for="register-password" class="block text-sm font-medium text-gray-700">確認密碼</label>
+                    <input
+                      type="password"
+                      id="register-password"
+                      class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md text-sm shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                      placeholder="請輸入密碼"
+                      v-model="RegisterForm.passwd" />
+                  </div>
+                  <div>
                     <label for="register-nickname" class="block text-sm font-medium text-gray-700">暱稱</label>
                     <input
                       type="text"
