@@ -63,8 +63,11 @@ import axios from "axios";
 // API 路徑定義
 export const API_PATHS = {
   AUTH: {
-    LOGIN: "/coffee/login", // 登入 API 路徑
-    REGISTER: "/coffee/register", // 註冊 API 路徑
+    LOGIN: "/api/auth/login", // 登入 API 路徑
+    REGISTER: "/api/auth/register", // 註冊 API 路徑
+  },
+  COFFEE: {
+    BASE: "/api/coffee", // 咖啡店 API 基礎路徑
   },
 };
 
@@ -80,32 +83,15 @@ const apiClient = axios.create({
 // 請求攔截器
 apiClient.interceptors.request.use(
   (config) => {
-
-    //  暫時先不使用
-    // **修改點 1: 確保 URL 是正確的，避免硬編碼**
-    // if (config.url === API_PATHS.AUTH.LOGIN) {
-    //   config.url = API_PATHS.AUTH.LOGIN; // 使用預定義的路徑
-    // } else if (config.url === API_PATHS.AUTH.REGISTER) {
-    //   config.url = API_PATHS.AUTH.REGISTER; // 使用預定義的路徑
-    // }
-
-    // // **修改點 2: 確保完整 URL 不被 baseURL 拼接**
-    // if (config.url.startsWith("http")) {
-    //   console.log("完整 URL，直接使用:", config.url);
-    // } else {
-    //   console.log("相對路徑，拼接 baseURL:", config.baseURL + config.url);
-    // }
-
-    // console.log("發送請求:", {
-    //   url: config.baseURL + config.url, // 檢查最終的請求 URL
-    //   method: config.method,
-    //   headers: config.headers,
-    // });
+    // 從 localStorage 取得 JWT token 並添加到請求 header
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
 
     return config;
   },
   (error) => {
-    // console.error("請求錯誤:", error);
     return Promise.reject(error);
   }
 );

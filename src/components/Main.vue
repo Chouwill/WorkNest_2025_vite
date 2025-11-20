@@ -29,14 +29,19 @@ async function getInformation() {
     loading.value = true;
     console.log("開始請求 API...");
 
-    const response = await get("/");
+    const response = await get("/api/coffee");
     console.log("API 返回的原始資料:", response);
 
-    // 清洗資料
-    information.value = Object.values(response).map((item) => ({
-      ...item,
-      powerOutlet: item.powerOutlet === true || item.powerOutlet === "是", // 轉換為布林值
-    }));
+    // 清洗資料（後端回傳的是陣列）
+    information.value = Array.isArray(response)
+      ? response.map((item) => ({
+          ...item,
+          powerOutlet: item.powerOutlet === true || item.powerOutlet === "是", // 轉換為布林值
+        }))
+      : Object.values(response).map((item) => ({
+          ...item,
+          powerOutlet: item.powerOutlet === true || item.powerOutlet === "是",
+        }));
 
     console.log("清洗後的資料:", information.value);
   } catch (err) {

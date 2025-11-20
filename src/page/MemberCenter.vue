@@ -12,9 +12,7 @@ const router = useRouter();
 const isLogin = ref(true); // 控制是否顯示登入表單
 const LoginForm = ref({
   email: "coffee@gmail.com",
-  uid: "vD3XM0xqihWkHL2gO04qncMSrgH2",
-  password: "",
-  nickname: "co345678901234r",
+  passwd: "",
 });
 
 // 註冊相關數據
@@ -33,14 +31,17 @@ const ModalType = ref("error"); // 彈窗類型（success 或 error）
 async function memberLogin() {
   const loginData = {
     email: LoginForm.value.email.trim(),
-    uid: LoginForm.value.uid.trim(),
-    nickname: LoginForm.value.nickname.trim(),
+    passwd: LoginForm.value.passwd.trim(),
   };
   console.log("發送的登入數據:", loginData);
   try {
-    const response = await apiClient.post("/login", loginData);
-    localStorage.setItem("token", loginData.uid);
-    
+    const response = await apiClient.post("/api/auth/login", loginData);
+
+    // 儲存 JWT token
+    if (response.token) {
+      localStorage.setItem("token", response.token);
+    }
+
     // 成功訊息
     ModalMessage.value = "登入成功！即將跳轉到後台系統...";
     ModalType.value = "success"; // 設置為成功類型
@@ -79,26 +80,19 @@ async function memberRegister() {
     passwd: RegisterForm.value.passwd.trim(),
     nickname: RegisterForm.value.nickname.trim(),
   };
-  // console.log("發送的註冊數據:", RegisterData);
-  // console.log("發送的註冊數據:");
   try {
-    const response = await apiClient.post("/register", RegisterData);
+    const response = await apiClient.post("/api/auth/register", RegisterData);
 
     // 成功訊息
     ModalMessage.value = "註冊成功！請切換到登入頁面進行登入。";
     ModalType.value = "success"; // 設置為成功類型
     isModalVisible.value = true;
 
-    // console.log("註冊成功:", response);
-    // console.log("註冊成功:");
-
     // 切換到登入表單
     isLogin.value = true;
 
     return response;
   } catch (error) {
-    // console.error("註冊錯誤:", error);
-
     // 錯誤訊息
     ModalMessage.value = error.response?.data?.message || "註冊失敗";
     ModalType.value = "error"; // 設置為錯誤類型
@@ -158,22 +152,13 @@ async function memberRegister() {
                       v-model="LoginForm.email" />
                   </div>
                   <div>
-                    <label for="uid" class="block text-sm font-medium text-gray-700">UID</label>
+                    <label for="password" class="block text-sm font-medium text-gray-700">密碼</label>
                     <input
-                      type="text"
-                      id="uid"
+                      type="password"
+                      id="password"
                       class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md text-sm shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                      placeholder="UID"
-                      v-model="LoginForm.uid" />
-                  </div>
-                  <div>
-                    <label for="nickname" class="block text-sm font-medium text-gray-700">暱稱</label>
-                    <input
-                      type="text"
-                      id="nickname"
-                      class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md text-sm shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                      placeholder="暱稱"
-                      v-model="LoginForm.nickname" />
+                      placeholder="請輸入密碼"
+                      v-model="LoginForm.passwd" />
                   </div>
                   <div>
                     <button

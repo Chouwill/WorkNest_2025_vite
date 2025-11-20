@@ -13,16 +13,23 @@ async function getInformation() {
     loading.value = true;
     console.log("開始請求 API...");
 
-    const response = await get("/");
+    const response = await get("/api/coffee");
     console.log("API 返回的原始資料:", response);
 
-    // 清洗資料
-    information.value = Object.values(response).map((item) => ({
-      ...item,
-      StoreName: item.StoreName || "未命名咖啡廳",
-      powerOutlet: item.powerOutlet === true || item.powerOutlet === "是", // 轉換為布林值
-      id: item.id || null, // 確保 id 存在
-    }));
+    // 清洗資料（後端回傳的是陣列）
+    information.value = Array.isArray(response)
+      ? response.map((item) => ({
+          ...item,
+          StoreName: item.StoreName || "未命名咖啡廳",
+          powerOutlet: item.powerOutlet === true || item.powerOutlet === "是", // 轉換為布林值
+          id: item.id || null, // 確保 id 存在
+        }))
+      : Object.values(response).map((item) => ({
+          ...item,
+          StoreName: item.StoreName || "未命名咖啡廳",
+          powerOutlet: item.powerOutlet === true || item.powerOutlet === "是",
+          id: item.id || null,
+        }));
 
     console.log("清洗後的資料:", information.value);
   } catch (err) {
@@ -146,7 +153,7 @@ const handleSubmit = async () => {
         return;
       }
 
-      await apiClient.put(`/${currentForm.value.id}`, currentForm.value);
+      await apiClient.put(`/api/coffee/${currentForm.value.id}`, currentForm.value);
       console.log("更新成功");
 
       const index = information.value.findIndex((item) => item.id === currentForm.value.id);
@@ -158,10 +165,10 @@ const handleSubmit = async () => {
       console.log("修改後的當筆資料：", { ...currentForm.value });
     } else {
       // 新增資料
-      const response = await apiClient.post("/", currentForm.value);
+      const response = await apiClient.post("/api/coffee", currentForm.value);
 
-      // 根據後端回應結構，直接從 response.id 提取
-      const newId = response.id; // 從 response.id 提取
+      // 根據後端回應結構，從 response.data.id 提取
+      const newId = response.data?.id || response.id;
       if (!newId) {
         console.error("新增失敗，後端回應中缺少 id");
         return;
@@ -187,7 +194,7 @@ const handleSubmit = async () => {
 // 刪除資料API
 const handleDelete = async (id) => {
   try {
-    await apiClient.delete(`/${id}`);
+    await apiClient.delete(`/api/coffee/${id}`);
     console.log("刪除成功");
 
     information.value = information.value.filter((item) => item.id !== id);
