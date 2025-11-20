@@ -73,7 +73,7 @@ export const API_PATHS = {
 
 // 創建 axios 實例
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_APP_PATH || "http://localhost:3000", // 確保 baseURL 正確
+  baseURL: import.meta.env.VITE_API_PATH || "http://localhost:3000", // 確保 baseURL 正確
   headers: {
     "Content-Type": "application/json",
     "X-API-Key": import.meta.env.VITE_API_KEY, // 環境變數中的 API Key
