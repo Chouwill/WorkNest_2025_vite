@@ -10,16 +10,21 @@ const router = useRouter();
 
 // 登入相關數據
 const isLogin = ref(true); // 控制是否顯示登入表單
+
+
+// 預設帳號
 const LoginForm = ref({
-  email: "coffee@gmail.com",
-  passwd: "",
+  email: "coffeeadmin@gmail.com",
+  passwd: "admin678912345p",
 });
 
 // 註冊相關數據
 const RegisterForm = ref({
-  email: "text@gmail.com",
-  passwd: "asdqwer6945",
-  nickname: "T2345678901234r",
+  email: "coffeeadmin@gmail.com",
+  passwd: "admin678912345p",
+  
+  // nickname 15碼
+  nickname: "12345678901234Y",
 });
 
 // 彈窗相關狀態
