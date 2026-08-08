@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
 import { get } from "../api/request";
+import { API_PATHS } from "../api/axios";
 import { useFavoriteStore } from "../store/Favorite";
 import defaultImageSrc from "../image/shopping_defaultImage.png";
 
@@ -38,7 +39,8 @@ async function getInformation() {
     loading.value = true;
     console.log("開始請求 API...");
 
-    const response = await get("/api/coffee");
+    // path: /api/coffee-shop/coffee
+    const response = await get(API_PATHS.COFFEE.BASE);
     console.log("API 返回的原始資料:", response);
 
     // 清洗資料（後端回傳的是陣列）

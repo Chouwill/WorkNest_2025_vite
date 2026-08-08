@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import MemberModal from "../components/member/MemberModal.vue";
-import apiClient from "../api/axios";
+import apiClient, { API_PATHS } from "../api/axios";
 import { useRouter } from "vue-router";
 // import { useUserInfoStore } from "../store/User";
 
@@ -35,7 +35,8 @@ async function memberLogin() {
   };
   console.log("發送的登入數據:", loginData);
   try {
-    const response = await apiClient.post("/api/auth/login", loginData);
+    // path: /api/coffee-shop/auth/login（portfolio 後端）
+    const response = await apiClient.post(API_PATHS.AUTH.LOGIN, loginData);
 
     // 儲存 JWT token
     if (response.token) {
@@ -81,7 +82,8 @@ async function memberRegister() {
     nickname: RegisterForm.value.nickname.trim(),
   };
   try {
-    const response = await apiClient.post("/api/auth/register", RegisterData);
+    // path: /api/coffee-shop/auth/register（portfolio 後端）
+    const response = await apiClient.post(API_PATHS.AUTH.REGISTER, RegisterData);
 
     // 成功訊息
     ModalMessage.value = "註冊成功！請切換到登入頁面進行登入。";

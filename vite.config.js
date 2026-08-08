@@ -6,7 +6,6 @@ import { createHtmlPlugin } from "vite-plugin-html";
 export default defineConfig({
   base: "/",
   plugins: [
-    // 確保 vueDevTools 在 createHtmlPlugin 之前註冊
     vueDevTools(),
     vue(),
     createHtmlPlugin({
@@ -19,16 +18,16 @@ export default defineConfig({
   ],
   server: {
     proxy: {
+      // 瀏覽器打 /api/... → portfolio backend（保留完整路徑，不可 strip /api）
       "/api": {
-        target: "http://localhost:3000", // 後端服務器地址
+        target: "http://localhost:3000",
         changeOrigin: true,
         secure: false,
-        rewrite: (path) => path.replace(/^\/api/, ""),
-        configure: (proxy, options) => {
-          proxy.on("error", (err, req, res) => {
+        configure: (proxy) => {
+          proxy.on("error", (err) => {
             console.log("proxy error", err);
           });
-          proxy.on("proxyReq", (proxyReq, req, res) => {
+          proxy.on("proxyReq", (proxyReq) => {
             console.log("Sending Request to:", proxyReq.path);
           });
         },
@@ -36,4 +35,3 @@ export default defineConfig({
     },
   },
 });
-

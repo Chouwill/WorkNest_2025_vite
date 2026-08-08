@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import apiClient from "../api/axios";
+import apiClient, { API_PATHS } from "../api/axios";
 import { get } from "../api/request";
 
 // 取得所有目前資料GET
@@ -13,7 +13,8 @@ async function getInformation() {
     loading.value = true;
     console.log("開始請求 API...");
 
-    const response = await get("/api/coffee");
+    // path: /api/coffee-shop/coffee
+    const response = await get(API_PATHS.COFFEE.BASE);
     console.log("API 返回的原始資料:", response);
 
     // 清洗資料（後端回傳的是陣列）
@@ -153,7 +154,10 @@ const handleSubmit = async () => {
         return;
       }
 
-      await apiClient.put(`/api/coffee/${currentForm.value.id}`, currentForm.value);
+      await apiClient.put(
+        `${API_PATHS.COFFEE.BASE}/${currentForm.value.id}`,
+        currentForm.value
+      );
       console.log("更新成功");
 
       const index = information.value.findIndex((item) => item.id === currentForm.value.id);
@@ -165,7 +169,7 @@ const handleSubmit = async () => {
       console.log("修改後的當筆資料：", { ...currentForm.value });
     } else {
       // 新增資料
-      const response = await apiClient.post("/api/coffee", currentForm.value);
+      const response = await apiClient.post(API_PATHS.COFFEE.BASE, currentForm.value);
 
       // 根據後端回應結構，從 response.data.id 提取
       const newId = response.data?.id || response.id;
@@ -194,7 +198,7 @@ const handleSubmit = async () => {
 // 刪除資料API
 const handleDelete = async (id) => {
   try {
-    await apiClient.delete(`/api/coffee/${id}`);
+    await apiClient.delete(`${API_PATHS.COFFEE.BASE}/${id}`);
     console.log("刪除成功");
 
     information.value = information.value.filter((item) => item.id !== id);
